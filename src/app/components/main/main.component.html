@@ -1,0 +1,49 @@
+<div class="particles-container">
+    <section class="imagen-playlist" [style]="{'background-image': 'url(' + imgMusicaActual + ')'}">
+        <article>
+            <div class="playlist-info">
+                <div class="playlist-info-img">
+                    <img src="{{imgMusicaActual}}" alt="">
+                </div>
+                <div class="playlist-info-text">
+                    <h2>{{tituloMusicaActual}}</h2>
+                    <p>{{artistaMusicaActual}}</p>
+                    <div class="playlist-info-text-buttons">
+                        <button class="btn btn-primary" (click)="clickInint(idMusicaActual)"><i
+                                class='bx {{playlistInfoTextButtons}}'></i>Play</button>
+                        <button class="btn btn-secondary" (click)="shareLink()"><i
+                                class='bx bxs-share-alt'></i>Share</button>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+    <section class="playlist">
+        <h2 class="playlist-title">Playlist</h2>
+        <div class="album-header">
+            @for(song of playlist; track song.id) {
+            <div class="song">
+                <div class="song-info">
+                    <span class="song-id">{{song.id}}</span>
+                    @if(isPlaying && currentSong === song.id) {
+                    <span class="song-icon" (click)="clickInint(song.id)"><i class='bx bx-pause'></i></span>
+                    } @else {
+                    <span class="song-icon" (click)="clickInint(song.id)"><i class='bx bx-caret-right'></i></span>
+                    }
+                    <div>
+                        <p>{{song.title}}</p>
+                        <p>{{song.artist}}</p>
+                    </div>
+                </div>
+                <div class="song-duration">
+                    <span class="song-time">{{song.duration}}</span>
+                    <i class='bx bxl-whatsapp' (click)="shareOnWhatsApp()"></i>
+                    <i class='bx bxs-download' (click)="downloadMusic(song.id)"></i>
+                </div>
+            </div>
+            }
+        </div>
+    </section>
+    <canvas #particlesCanvas></canvas>
+    <ng-content></ng-content>
+</div>
