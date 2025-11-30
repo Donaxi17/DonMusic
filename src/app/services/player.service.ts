@@ -1,0 +1,187 @@
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { Song } from './playlist.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PlayerService {
+  private audio = new Audio();
+
+  // Estado del reproductor (observables para que los componentes se suscriban)
+  private currentSongSubject = new BehaviorSubject<Song | null>(null);
+  private isPlayingSubject = new BehaviorSubject<boolean>(false);
+  private playlistSubject = new BehaviorSubject<Song[]>([]);
+  private currentTimeSubject = new BehaviorSubject<number>(0);
+  private durationSubject = new BehaviorSubject<number>(0);
+  private progressSubject = new BehaviorSubject<number>(0);
+  private volumeSubject = new BehaviorSubject<number>(70);
+  private isShuffleSubject = new BehaviorSubject<boolean>(false);
+  private repeatModeSubject = new BehaviorSubject<'off' | 'all' | 'one'>('off');
+  private isFavoritesPlayingSubject = new BehaviorSubject<boolean>(false);
+
+  // Exponer como observables públicos
+  currentSong$ = this.currentSongSubject.asObservable();
+  isPlaying$ = this.isPlayingSubject.asObservable();
+  playlist$ = this.playlistSubject.asObservable();
+  currentTime$ = this.currentTimeSubject.asObservable();
+  duration$ = this.durationSubject.asObservable();
+  progress$ = this.progressSubject.asObservable();
+  volume$ = this.volumeSubject.asObservable();
+  isShuffle$ = this.isShuffleSubject.asObservable();
+  repeatMode$ = this.repeatModeSubject.asObservable();
+  isFavoritesPlaying$ = this.isFavoritesPlayingSubject.asObservable();
+
+  constructor() {
+    this.initializeAudioListeners();
+  }
+
+  private initializeAudioListeners(): void {
+    // Actualizar progreso
+    this.audio.addEventListener('timeupdate', () => {
+      this.currentTimeSubject.next(this.audio.currentTime);
+      this.durationSubject.next(this.audio.duration || 0);
+      const progress = this.audio.duration > 0
+        ? (this.audio.currentTime / this.audio.duration) * 100
+        : 0;
+      this.progressSubject.next(progress);
+    });
+
+    // Auto-play siguiente canción
+    this.audio.addEventListener('ended', () => {
+      if (this.repeatModeSubject.value === 'one') {
+        this.audio.currentTime = 0;
+        this.audio.play();
+      } else {
+        this.nextTrack();
+      }
+    });
+
+    // Configurar volumen inicial
+    this.audio.volume = this.volumeSubject.value / 100;
+  }
+
+  // ========== PLAYBACK CONTROLS ==========
+
+  playSong(song: Song): void {
+    const currentSong = this.currentSongSubject.value;
+
+    if (currentSong?.id === song.id) {
+      // Toggle play/pause si es la misma canción
+      if (this.isPlayingSubject.value) {
+        this.pause();
+      } else {
+        this.play();
+      }
+    } else {
+      // Reproducir nueva canción
+      this.currentSongSubject.next(song);
+      this.audio.src = song.url;
+      this.audio.load();
+      this.play();
+    }
+  }
+
+  play(): void {
+    this.audio.play()
+      .then(() => this.isPlayingSubject.next(true))
+      .catch(error => console.error('Error al reproducir:', error));
+  }
+
+  pause(): void {
+    this.audio.pause();
+    this.isPlayingSubject.next(false);
+  }
+
+  stop(): void {
+    this.audio.pause();
+    this.audio.currentTime = 0;
+    this.isPlayingSubject.next(false);
+    this.currentSongSubject.next(null);
+  }
+
+  setPlaylist(songs: Song[], isFavorites: boolean = false): void {
+    this.playlistSubject.next(songs);
+    this.isFavoritesPlayingSubject.next(isFavorites);
+  }
+
+  nextTrack(): void {
+    const playlist = this.playlistSubject.value;
+    const currentSong = this.currentSongSubject.value;
+
+    if (playlist.length === 0 || !currentSong) return;
+
+    const currentIndex = playlist.findIndex(s => s.id === currentSong.id);
+
+    if (this.isShuffleSubject.value) {
+      const randomIndex = Math.floor(Math.random() * playlist.length);
+      this.playSong(playlist[randomIndex]);
+    } else if (currentIndex < playlist.length - 1) {
+      this.playSong(playlist[currentIndex + 1]);
+    } else if (this.repeatModeSubject.value === 'all') {
+      this.playSong(playlist[0]);
+    }
+  }
+
+  previousTrack(): void {
+    const playlist = this.playlistSubject.value;
+    const currentSong = this.currentSongSubject.value;
+
+    if (playlist.length === 0 || !currentSong) return;
+
+    const currentIndex = playlist.findIndex(s => s.id === currentSong.id);
+
+    if (currentIndex > 0) {
+      this.playSong(playlist[currentIndex - 1]);
+    } else if (this.repeatModeSubject.value === 'all') {
+      this.playSong(playlist[playlist.length - 1]);
+    }
+  }
+
+  seekTo(percentage: number): void {
+    const duration = this.durationSubject.value;
+    if (duration > 0) {
+      this.audio.currentTime = (percentage / 100) * duration;
+    }
+  }
+
+  setVolume(value: number): void {
+    this.volumeSubject.next(value);
+    this.audio.volume = value / 100;
+  }
+
+  toggleShuffle(): void {
+    this.isShuffleSubject.next(!this.isShuffleSubject.value);
+  }
+
+  toggleRepeat(): void {
+    const current = this.repeatModeSubject.value;
+    if (current === 'off') {
+      this.repeatModeSubject.next('all');
+    } else if (current === 'all') {
+      this.repeatModeSubject.next('one');
+    } else {
+      this.repeatModeSubject.next('off');
+    }
+  }
+
+  formatTime(seconds: number): string {
+    if (isNaN(seconds) || seconds === 0) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  }
+
+  // Getters para valores actuales (sin suscripción)
+  get currentSong(): Song | null {
+    return this.currentSongSubject.value;
+  }
+
+  get isPlaying(): boolean {
+    return this.isPlayingSubject.value;
+  }
+
+  get playlist(): Song[] {
+    return this.playlistSubject.value;
+  }
+}

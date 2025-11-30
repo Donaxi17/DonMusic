@@ -1,0 +1,125 @@
+<div class="min-h-screen bg-zinc-950 text-white pb-32 md:pb-24">
+
+    <!-- Header/Menu - Desktop -->
+    <header class="border-b border-zinc-700 bg-black/80 backdrop-blur-md sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <h1 class="text-xl md:text-2xl font-bold bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent cursor-pointer"
+                (click)="navigateTo('/')">
+                DonMusic
+            </h1>
+            <nav class="hidden md:flex gap-8 text-base font-medium">
+                <button (click)="navigateTo('/')" [class.text-emerald-400]="isActive('/')"
+                    [class.text-zinc-400]="!isActive('/')"
+                    class="hover:text-emerald-400 transition-colors px-3 py-2 rounded-lg hover:bg-zinc-900">
+                    Inicio
+                </button>
+                <button (click)="navigateTo('/artists')"
+                    [class.text-emerald-400]="isActive('/artists') || isActive('/player')"
+                    [class.text-zinc-400]="!isActive('/artists') && !isActive('/player')"
+                    class="hover:text-emerald-400 transition-colors px-3 py-2 rounded-lg hover:bg-zinc-900">
+                    Artistas
+                </button>
+                <button (click)="navigateTo('/discover')" [class.text-emerald-400]="isActive('/discover')"
+                    [class.text-zinc-400]="!isActive('/discover')"
+                    class="hover:text-emerald-400 transition-colors px-3 py-2 rounded-lg hover:bg-zinc-900 flex items-center gap-2">
+                    <i class='bx bx-world'></i> Descubre
+                </button>
+                <button (click)="navigateTo('/videos')" [class.text-red-400]="isActive('/videos')"
+                    [class.text-zinc-400]="!isActive('/videos')"
+                    class="hover:text-red-400 transition-colors px-3 py-2 rounded-lg hover:bg-zinc-900 flex items-center gap-2">
+                    <i class='bx bxl-youtube'></i> Videos
+                </button>
+                <button (click)="navigateTo('/radio')" [class.text-emerald-400]="isActive('/radio')"
+                    [class.text-zinc-400]="!isActive('/radio')"
+                    class="hover:text-emerald-400 transition-colors px-3 py-2 rounded-lg hover:bg-zinc-900 flex items-center gap-2">
+                    <i class='bx bx-radio'></i> Radio
+                </button>
+                <button (click)="navigateTo('/playlists')" [class.text-emerald-400]="isActive('/playlists')"
+                    [class.text-zinc-400]="!isActive('/playlists')"
+                    class="hover:text-emerald-400 transition-colors px-3 py-2 rounded-lg hover:bg-zinc-900 flex items-center gap-2">
+                    <i class='bx bx-list-ul'></i> Playlists
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <router-outlet></router-outlet>
+
+    <!-- Mini Player (Visible when not in player view and music is active) -->
+    <div *ngIf="!isActive('/player') && currentSong"
+        class="fixed bottom-[4.5rem] md:bottom-0 left-0 right-0 bg-zinc-900/95 backdrop-blur-md border-t border-zinc-800 p-3 z-40 flex items-center justify-between shadow-2xl">
+
+        <div (click)="openPlayer()" class="flex items-center gap-3 flex-1 min-w-0 cursor-pointer group">
+            <div class="relative w-12 h-12 rounded overflow-hidden bg-zinc-800 flex-shrink-0">
+                <img [src]="currentSong.img" alt="Cover"
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform">
+            </div>
+            <div class="min-w-0">
+                <p class="text-sm font-bold truncate transition-colors"
+                    [ngClass]="isFavoritesPlaying ? 'text-red-400' : 'text-emerald-400'">
+                    {{currentSong.title}}
+                </p>
+                <p class="text-xs text-zinc-400 truncate">{{currentSong.artist}}</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2 md:gap-4 mr-2">
+            <button (click)="previousTrack()"
+                class="hidden md:block p-2 rounded-full hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white">
+                <i class='bx bx-skip-previous text-2xl'></i>
+            </button>
+
+            <button (click)="togglePlayPause()"
+                class="p-2 rounded-full hover:bg-zinc-800 transition-colors transform hover:scale-110"
+                [ngClass]="isFavoritesPlaying ? 'text-red-400' : 'text-emerald-400'">
+                <i class='bx text-3xl' [class]="isPlaying ? 'bx-pause-circle' : 'bx-play-circle'"></i>
+            </button>
+
+            <button (click)="nextTrack()"
+                class="p-2 rounded-full hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white">
+                <i class='bx bx-skip-next text-2xl'></i>
+            </button>
+
+            <div class="w-px h-8 bg-zinc-800 mx-1"></div>
+
+            <button (click)="closePlayer()"
+                class="p-2 rounded-full hover:bg-zinc-800 transition-colors text-zinc-500 hover:text-red-400"
+                title="Cerrar reproductor">
+                <i class='bx bx-x text-2xl'></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav
+        class="md:hidden fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-lg border-t border-zinc-800 flex justify-around p-3 z-50">
+        <button (click)="navigateTo('/')" class="flex flex-col items-center gap-1 w-16"
+            [class.text-emerald-400]="isActive('/')" [class.text-zinc-400]="!isActive('/')">
+            <i class='bx bx-home text-2xl'></i>
+            <span class="text-[10px]">Inicio</span>
+        </button>
+        <button (click)="navigateTo('/artists')" class="flex flex-col items-center gap-1 w-16"
+            [class.text-emerald-400]="isActive('/artists') || isActive('/player')"
+            [class.text-zinc-400]="!isActive('/artists') && !isActive('/player')">
+            <i class='bx bx-music text-2xl'></i>
+            <span class="text-[10px]">Artistas</span>
+        </button>
+        <button (click)="navigateTo('/discover')" class="flex flex-col items-center gap-1 w-16"
+            [class.text-emerald-400]="isActive('/discover')" [class.text-zinc-400]="!isActive('/discover')">
+            <i class='bx bx-world text-2xl'></i>
+            <span class="text-[10px]">Descubre</span>
+        </button>
+        <button (click)="navigateTo('/videos')" class="flex flex-col items-center gap-1 w-16"
+            [class.text-red-400]="isActive('/videos')" [class.text-zinc-400]="!isActive('/videos')">
+            <i class='bx bxl-youtube text-2xl'></i>
+            <span class="text-[10px]">Videos</span>
+        </button>
+        <button (click)="navigateTo('/playlists')" class="flex flex-col items-center gap-1 w-16"
+            [class.text-emerald-400]="isActive('/playlists')" [class.text-zinc-400]="!isActive('/playlists')">
+            <i class='bx bx-list-ul text-2xl'></i>
+            <span class="text-[10px]">Playlists</span>
+        </button>
+    </nav>
+
+</div>

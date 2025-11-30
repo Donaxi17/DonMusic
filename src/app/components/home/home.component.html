@@ -1,0 +1,137 @@
+<div class="max-w-7xl mx-auto px-4 md:px-6 py-4 md:py-8 pb-24 md:pb-8">
+
+    <!-- Hero Section -->
+    <section class="text-center mb-8 md:mb-16 py-8 md:py-20">
+        <h2
+            class="text-3xl md:text-7xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-emerald-400 via-green-500 to-emerald-600 bg-clip-text text-transparent leading-tight">
+            Bienvenido a DonMusic
+        </h2>
+        <p class="text-base md:text-2xl text-zinc-400 mb-6 md:mb-8 max-w-3xl mx-auto px-4">
+            La mejor experiencia musical con los mejores artistas
+        </p>
+        <button (click)="navigateToArtists()"
+            class="px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-black font-bold rounded-full text-base md:text-lg transition-all transform hover:scale-105 shadow-lg shadow-emerald-500/30">
+            Explorar Artistas
+        </button>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 mb-10 md:mb-16">
+        <div
+            class="p-6 md:p-8 flex flex-col justify-center items-center text-center bg-zinc-900/50 border border-zinc-800 rounded-2xl hover:border-emerald-500/50 transition-all group">
+            <div
+                class="w-12 h-12 md:w-16 md:h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mb-3 md:mb-4 group-hover:bg-emerald-500/20 transition-colors">
+                <i class='bx bx-music text-2xl md:text-3xl text-emerald-400'></i>
+            </div>
+            <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-3">Música de Calidad</h3>
+            <p class="text-sm md:text-base text-zinc-400">Disfruta de las mejores canciones en alta calidad</p>
+        </div>
+        <div
+            class="p-6 md:p-8 flex flex-col justify-center items-center text-center bg-zinc-900/50 border border-zinc-800 rounded-2xl hover:border-emerald-500/50 transition-all group">
+            <div
+                class="w-12 h-12 md:w-16 md:h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mb-3 md:mb-4 group-hover:bg-emerald-500/20 transition-colors">
+                <i class='bx bx-download text-2xl md:text-3xl text-emerald-400'></i>
+            </div>
+            <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-3">Descarga Fácil</h3>
+            <p class="text-sm md:text-base text-zinc-400">Descarga tus canciones favoritas con un solo clic</p>
+        </div>
+        <div
+            class="p-6 md:p-8 flex flex-col justify-center items-center text-center bg-zinc-900/50 border border-zinc-800 rounded-2xl hover:border-emerald-500/50 transition-all group">
+            <div
+                class="w-12 h-12 md:w-16 md:h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mb-3 md:mb-4 group-hover:bg-emerald-500/20 transition-colors">
+                <i class='bx bx-share-alt text-2xl md:text-3xl text-emerald-400'></i>
+            </div>
+            <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-3">Comparte</h3>
+            <p class="text-sm md:text-base text-zinc-400">Comparte tus canciones favoritas con tus amigos</p>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-10 md:mb-16">
+        <div class="text-center p-4 md:p-6 bg-zinc-900/30 rounded-xl border border-zinc-800">
+            <p class="text-2xl md:text-4xl font-bold text-emerald-400 mb-1 md:mb-2">12</p>
+            <p class="text-sm md:text-base text-zinc-400">Artistas</p>
+        </div>
+        <div class="text-center p-4 md:p-6 bg-zinc-900/30 rounded-xl border border-zinc-800">
+            <p class="text-2xl md:text-4xl font-bold text-emerald-400 mb-1 md:mb-2">100+</p>
+            <p class="text-sm md:text-base text-zinc-400">Canciones</p>
+        </div>
+        <div class="text-center p-4 md:p-6 bg-zinc-900/30 rounded-xl border border-zinc-800">
+            <p class="text-2xl md:text-4xl font-bold text-emerald-400 mb-1 md:mb-2">100%</p>
+            <p class="text-sm md:text-base text-zinc-400">Gratis</p>
+        </div>
+        <div class="text-center p-4 md:p-6 bg-zinc-900/30 rounded-xl border border-zinc-800">
+            <p class="text-2xl md:text-4xl font-bold text-emerald-400 mb-1 md:mb-2">HD</p>
+            <p class="text-sm md:text-base text-zinc-400">Calidad</p>
+        </div>
+    </section>
+
+    <!-- Request Music Form -->
+    <section class="relative overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900/50 p-8 md:p-12">
+        <div
+            class="absolute top-0 right-0 -mt-20 -mr-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none">
+        </div>
+        <div
+            class="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-green-500/10 rounded-full blur-3xl pointer-events-none">
+        </div>
+
+        <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <span
+                    class="inline-block py-1 px-3 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-4">
+                    ¿No encuentras tu canción?
+                </span>
+                <h3
+                    class="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
+                    Solicita tu Música Favorita
+                </h3>
+                <p class="text-zinc-400 mb-8 text-lg leading-relaxed">
+                    En DonMusic queremos tener todo lo que te gusta. Si falta algún artista, álbum o canción, dinos
+                    y lo agregaremos a nuestra biblioteca lo antes posible.
+                </p>
+                <div class="flex items-center gap-4 text-zinc-500">
+                    <div class="flex items-center gap-2">
+                        <i class='bx bx-check-circle text-emerald-500'></i>
+                        <span>Respuesta rápida</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class='bx bx-check-circle text-emerald-500'></i>
+                        <span>Alta calidad</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-zinc-950/50 backdrop-blur-sm p-6 md:p-8 rounded-2xl border border-zinc-800/50 shadow-xl">
+                <form (submit)="submitRequest(); $event.preventDefault()" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-zinc-300 mb-1.5">Nombre del Artista</label>
+                        <div class="relative">
+                            <i class='bx bx-user absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500'></i>
+                            <input [(ngModel)]="requestArtist" name="artist" type="text" placeholder="Ej: Bad Bunny"
+                                class="w-full pl-10 pr-4 py-3 bg-zinc-900 border border-zinc-800 rounded-xl focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none transition-all text-white placeholder-zinc-600">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-zinc-300 mb-1.5">Canción o Álbum</label>
+                        <div class="relative">
+                            <i class='bx bx-disc absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500'></i>
+                            <input [(ngModel)]="requestSong" name="song" type="text" placeholder="Ej: Un Verano Sin Ti"
+                                class="w-full pl-10 pr-4 py-3 bg-zinc-900 border border-zinc-800 rounded-xl focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none transition-all text-white placeholder-zinc-600">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-zinc-300 mb-1.5">Mensaje (Opcional)</label>
+                        <textarea [(ngModel)]="requestMessage" name="message" rows="3"
+                            placeholder="¿Alguna versión en específico?"
+                            class="w-full px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-xl focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none transition-all text-white placeholder-zinc-600 resize-none"></textarea>
+                    </div>
+                    <button type="submit"
+                        class="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-black font-bold rounded-xl transition-all transform hover:scale-[1.02] shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
+                        <span>Enviar Solicitud</span>
+                        <i class='bx bx-send'></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>

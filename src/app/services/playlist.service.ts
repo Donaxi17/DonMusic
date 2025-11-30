@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 
 export interface Song {
-  id: number;
+  id: number | string; // Permitir string para IDs de API
   artistId: number;
   img: string;
   title: string;
   artist: string;
   duration: string;
   url: string;
+  album?: string; // Opcional: nombre del álbum
+  genre?: string; // Opcional: género musical
+  license?: string; // Opcional: licencia Creative Commons (para Jamendo)
 }
 
 export interface Playlist {
@@ -70,7 +73,7 @@ export class PlaylistService {
     return true;
   }
 
-  removeSongFromPlaylist(playlistId: string, songId: number): void {
+  removeSongFromPlaylist(playlistId: string, songId: number | string): void {
     const playlists = this.getPlaylists();
     const playlist = playlists.find(p => p.id === playlistId);
 
@@ -100,13 +103,13 @@ export class PlaylistService {
     return true;
   }
 
-  removeFromFavorites(songId: number): void {
+  removeFromFavorites(songId: number | string): void {
     let favorites = this.getFavorites();
     favorites = favorites.filter(s => s.id !== songId);
     localStorage.setItem(this.FAVORITES_KEY, JSON.stringify(favorites));
   }
 
-  isFavorite(songId: number): boolean {
+  isFavorite(songId: number | string): boolean {
     const favorites = this.getFavorites();
     return favorites.some(s => s.id === songId);
   }

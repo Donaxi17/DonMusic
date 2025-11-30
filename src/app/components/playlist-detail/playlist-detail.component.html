@@ -1,0 +1,91 @@
+<div class="max-w-5xl mx-auto animate-fade-in">
+
+    <!-- Back Button -->
+    <button (click)="onBack()"
+        class="mb-6 flex items-center gap-2 text-zinc-400 hover:text-emerald-400 transition-colors group">
+        <i class='bx bx-arrow-back text-xl group-hover:-translate-x-1 transition-transform'></i>
+        <span>Volver a mis playlists</span>
+    </button>
+
+    <!-- Play All Hero Section -->
+    <div class="relative overflow-hidden bg-gradient-to-br from-emerald-600 via-green-700 to-teal-800 rounded-3xl p-8 md:p-12 shadow-2xl shadow-emerald-500/40 border border-emerald-500/20 cursor-pointer hover:scale-[1.02] transition-transform"
+        (click)="onPlayPlaylist()">
+
+        <!-- Animated Background Pattern -->
+        <div
+            class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE0YzAtMi4yMSAxLjc5LTQgNC00czQgMS43OSA0IDQtMS43OSA0LTQgNC00LTEuNzktNC00em0wIDQwYzAtMi4yMSAxLjc5LTQgNC00czQgMS43OSA0IDQtMS43OSA0LTQgNC00LTEuNzktNC00ek0xNCAzNmMtMi4yMSAwLTQtMS43OS00LTRzMS43OS00IDQtNCA0IDEuNzkgNCA0LTEuNzkgNC00IDR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30">
+        </div>
+
+        <!-- Glow Effects -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl -mr-20 -mt-20"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl -ml-20 -mb-20"></div>
+
+        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-6">
+                <!-- Playlist Cover -->
+                <div class="relative">
+                    <div
+                        class="w-24 h-24 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center shadow-xl border border-white/20">
+                        <i class='bx bx-music text-5xl text-white drop-shadow-lg'></i>
+                    </div>
+                    <div
+                        class="absolute -top-1 -right-1 w-7 h-7 bg-teal-400 rounded-full flex items-center justify-center text-xs font-bold text-white shadow-lg">
+                        {{playlist.songs.length}}
+                    </div>
+                </div>
+
+                <!-- Text Info -->
+                <div class="text-white">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span
+                            class="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-xs font-bold uppercase tracking-wider rounded-full border border-white/30">
+                            Playlist
+                        </span>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2 drop-shadow-lg">{{playlist.name}}</h2>
+                    <p class="text-emerald-100/80 text-base max-w-md">
+                        {{playlist.description || 'Sin descripción'}}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Play All Button -->
+            <div *ngIf="playlist.songs.length > 0"
+                class="group relative px-10 py-5 bg-white hover:bg-emerald-50 text-emerald-600 font-bold rounded-2xl transition-all shadow-2xl hover:shadow-white/30 hover:scale-105 active:scale-95 flex items-center gap-3">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-white to-emerald-50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity">
+                </div>
+                <i class='bx bx-play-circle text-4xl relative z-10 group-hover:scale-110 transition-transform'></i>
+                <div class="relative z-10">
+                    <div class="text-sm opacity-75 font-normal">Reproducir</div>
+                    <div class="text-xl">Toda la Playlist</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons Row -->
+        <div class="relative z-10 flex flex-wrap items-center gap-3 mt-6 pt-6 border-t border-white/10">
+            <button (click)="$event.stopPropagation(); onShare()"
+                class="px-5 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-medium rounded-xl transition-all border border-white/20 hover:border-white/30 flex items-center gap-2">
+                <i class='bx bx-share-alt text-lg'></i>
+                <span>Compartir</span>
+            </button>
+
+            <button (click)="$event.stopPropagation(); onDeletePlaylist()"
+                class="px-5 py-2.5 bg-red-500/20 hover:bg-red-500/30 backdrop-blur-sm text-red-100 hover:text-white font-medium rounded-xl transition-all border border-red-400/30 hover:border-red-400/50 flex items-center gap-2">
+                <i class='bx bx-trash text-lg'></i>
+                <span>Eliminar Playlist</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="playlist.songs.length === 0"
+        class="mt-8 text-center py-16 bg-zinc-900/30 rounded-3xl border border-zinc-800 border-dashed">
+        <div class="w-20 h-20 bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class='bx bx-music text-4xl text-zinc-600'></i>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">Tu playlist está vacía</h3>
+        <p class="text-zinc-500">Agrega canciones desde el reproductor para comenzar a escuchar.</p>
+    </div>
+</div>

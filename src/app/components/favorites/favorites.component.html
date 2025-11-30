@@ -1,0 +1,62 @@
+<section class="mb-12">
+    <!-- Play All Hero Section -->
+    <div class="relative overflow-hidden bg-gradient-to-br from-red-600 via-red-700 to-pink-800 rounded-3xl p-8 md:p-12 shadow-2xl shadow-red-500/40 border border-red-500/20 cursor-pointer hover:scale-[1.02] transition-transform"
+        (click)="onPlayAll()">
+
+        <!-- Animated Background Pattern -->
+        <div
+            class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE0YzAtMi4yMSAxLjc5LTQgNC00czQgMS43OSA0IDQtMS43OSA0LTQgNC00LTEuNzktNC00em0wIDQwYzAtMi4yMSAxLjc5LTQgNC00czQgMS43OSA0IDQtMS43OSA0LTQgNC00LTEuNzktNC00ek0xNCAzNmMtMi4yMSAwLTQtMS43OS00LTRzMS43OS00IDQtNCA0IDEuNzkgNCA0LTEuNzkgNC00IDR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30">
+        </div>
+
+        <!-- Glow Effects -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl -mr-20 -mt-20"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-red-500/20 rounded-full blur-3xl -ml-20 -mb-20"></div>
+
+        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-6">
+                <!-- Animated Heart Icon -->
+                <div class="relative">
+                    <div
+                        class="w-20 h-20 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/20 shadow-xl">
+                        <i class='bx bxs-heart text-5xl text-white drop-shadow-lg animate-pulse'></i>
+                    </div>
+                    <div
+                        class="absolute -top-1 -right-1 w-6 h-6 bg-pink-400 rounded-full flex items-center justify-center text-xs font-bold text-white shadow-lg">
+                        {{favorites.length}}
+                    </div>
+                </div>
+
+                <!-- Text Info -->
+                <div class="text-white">
+                    <h3 class="text-3xl md:text-4xl font-bold mb-2 drop-shadow-lg">Mis Favoritos</h3>
+                    <p class="text-red-100/80 text-lg">{{favorites.length}} canciones que amas</p>
+                </div>
+            </div>
+
+            <!-- Play All Button -->
+            <div
+                class="group relative px-10 py-5 bg-white hover:bg-red-50 text-red-600 font-bold rounded-2xl transition-all shadow-2xl hover:shadow-white/30 hover:scale-105 active:scale-95 flex items-center gap-3">
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-white to-pink-50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity">
+                </div>
+                <i class='bx bx-play-circle text-4xl relative z-10 group-hover:scale-110 transition-transform'></i>
+                <div class="relative z-10">
+                    <div class="text-sm opacity-75 font-normal">Reproducir</div>
+                    <div class="text-xl">Todas las Favoritas</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="favorites.length === 0"
+        class="text-center py-16 bg-gradient-to-br from-red-900/10 to-pink-900/10 rounded-3xl border border-red-800/30 border-dashed">
+        <div
+            class="w-24 h-24 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-red-500/20">
+            <i class='bx bxs-heart text-5xl text-red-500/50'></i>
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-3">No tienes favoritos aún</h3>
+        <p class="text-zinc-500 max-w-md mx-auto">Agrega canciones a tus favoritos desde el reproductor para verlas
+            aquí.</p>
+    </div>
+</section>

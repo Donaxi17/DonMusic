@@ -29,6 +29,7 @@
     "@angular/cli": "^17.1.0",
     "@angular/compiler-cli": "^17.1.0",
     "@types/jasmine": "~5.1.0",
+    "@vercel/node": "^5.5.13",
     "autoprefixer": "^10.4.22",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",

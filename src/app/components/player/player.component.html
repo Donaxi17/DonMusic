@@ -1,0 +1,169 @@
+<main class="max-w-7xl mx-auto px-4 py-4 md:py-8 pb-32 md:pb-8">
+
+    <!-- Botón de Regreso -->
+    <button (click)="goBack()"
+        class="mb-4 md:mb-6 flex items-center gap-2 text-zinc-400 hover:text-emerald-400 transition-colors text-sm md:text-base">
+        <i class='bx bx-arrow-back text-xl'></i>
+        <span>Volver</span>
+    </button>
+
+    <!-- Now Playing - Album Art & Info -->
+    <section class="mb-6 md:mb-8" *ngIf="currentSong">
+        <div class="flex flex-col md:flex-row gap-4 md:gap-6 items-center md:items-start mb-4 md:mb-6">
+            <!-- Album Art - Smaller on mobile, centered -->
+            <div class="w-40 h-40 md:w-64 md:h-64 flex-shrink-0 rounded-lg overflow-hidden bg-zinc-800 shadow-2xl">
+                <img [src]="currentSong.img" alt="Album Art" class="w-full h-full object-cover">
+            </div>
+
+            <!-- Song Info -->
+            <div class="flex-grow w-full text-center md:text-left">
+                <p class="text-xs text-zinc-500 uppercase tracking-wider mb-1">Reproduciendo ahora</p>
+                <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 truncate px-2 md:px-0">{{currentSong.title}}
+                </h2>
+                <p class="text-zinc-400 text-base md:text-lg mb-3 md:mb-4 truncate px-2 md:px-0">{{currentSong.artist}}
+                </p>
+
+                <!-- Time Display -->
+                <div class="flex items-center justify-center md:justify-start gap-2 text-sm text-zinc-500 mb-3 md:mb-4">
+                    <span>{{formatTime(currentTime)}}</span>
+                    <span>•</span>
+                    <span>{{formatTime(duration)}}</span>
+                </div>
+
+                <!-- Progress Bar -->
+                <div (click)="seekTo($event)"
+                    class="relative h-2 bg-zinc-800 rounded-full cursor-pointer group overflow-hidden">
+                    <div class="absolute inset-y-0 left-0 rounded-full transition-all"
+                        [ngClass]="isFavoritesPlaying ? 'bg-gradient-to-r from-red-500 to-rose-600' : 'bg-gradient-to-r from-emerald-500 to-green-600'"
+                        [style.width.%]="progress"></div>
+                    <div
+                        class="absolute inset-0 bg-emerald-400/20 opacity-0 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <div class="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all"
+                        [style.left.%]="progress" style="margin-left: -8px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Controls -->
+        <div class="flex items-center justify-center md:justify-between gap-4 flex-wrap">
+            <!-- Left: Shuffle & Repeat -->
+            <div class="flex items-center gap-2 order-2 md:order-1">
+                <button (click)="toggleShuffle()" [class.text-emerald-400]="isShuffle && !isFavoritesPlaying"
+                    [class.text-red-400]="isShuffle && isFavoritesPlaying" [class.text-zinc-400]="!isShuffle"
+                    class="p-2 hover:bg-zinc-900 rounded-lg transition-all hover:scale-110" title="Aleatorio">
+                    <i class='bx bx-shuffle text-lg md:text-xl'></i>
+                </button>
+                <button (click)="toggleRepeat()" [class.text-emerald-400]="repeatMode !== 'off' && !isFavoritesPlaying"
+                    [class.text-red-400]="repeatMode !== 'off' && isFavoritesPlaying"
+                    [class.text-zinc-400]="repeatMode === 'off'"
+                    class="p-2 hover:bg-zinc-900 rounded-lg transition-all hover:scale-110 relative" title="Repetir">
+                    <i class='bx text-lg md:text-xl' [class.bx-repeat]="repeatMode === 'off' || repeatMode === 'all'"
+                        [class.bxs-repeat-one]="repeatMode === 'one'"></i>
+                    <span *ngIf="repeatMode === 'all'" class="absolute -top-1 -right-1 w-3 h-3 rounded-full"
+                        [ngClass]="isFavoritesPlaying ? 'bg-red-500' : 'bg-emerald-500'"></span>
+                </button>
+            </div>
+
+            <!-- Center: Playback Controls -->
+            <div class="flex items-center gap-2 md:gap-3 order-1 md:order-2">
+                <button (click)="previousTrack()"
+                    class="p-2 md:p-3 hover:bg-zinc-900 rounded-full transition-all hover:scale-110 text-zinc-300 hover:text-white"
+                    title="Anterior">
+                    <i class='bx bx-skip-previous text-xl md:text-2xl'></i>
+                </button>
+                <button (click)="togglePlayPause()"
+                    class="w-12 h-12 md:w-14 md:h-14 flex items-center justify-center rounded-full transition-all transform hover:scale-105 shadow-lg"
+                    [ngClass]="isFavoritesPlaying ? 'bg-gradient-to-r from-red-500 to-rose-600 shadow-red-500/30' : 'bg-gradient-to-r from-emerald-500 to-green-600 shadow-emerald-500/30'">
+                    <i class='bx text-2xl md:text-3xl text-black' [class.bx-pause]="isPlaying"
+                        [class.bx-play]="!isPlaying"></i>
+                </button>
+                <button (click)="nextTrack()"
+                    class="p-2 md:p-3 hover:bg-zinc-900 rounded-full transition-all hover:scale-110 text-zinc-300 hover:text-white"
+                    title="Siguiente">
+                    <i class='bx bx-skip-next text-xl md:text-2xl'></i>
+                </button>
+            </div>
+
+            <!-- Right: Volume Control - Hidden on mobile -->
+            <div class="hidden md:flex items-center gap-3 min-w-[140px] order-3">
+                <i class='bx text-xl text-zinc-400' [class.bx-volume-full]="volume > 50"
+                    [class.bx-volume-low]="volume > 0 && volume <= 50" [class.bx-volume-mute]="volume === 0"></i>
+                <input type="range" min="0" max="100" [value]="volume" (input)="setVolume($any($event.target).value)"
+                    class="flex-1 h-1 bg-zinc-800 rounded-full appearance-none cursor-pointer
+                        [&::-webkit-slider-thumb]:appearance-none 
+                        [&::-webkit-slider-thumb]:w-3 
+                        [&::-webkit-slider-thumb]:h-3 
+                        [&::-webkit-slider-thumb]:rounded-full 
+                        [&::-webkit-slider-thumb]:bg-emerald-500
+                        [&::-webkit-slider-thumb]:cursor-pointer
+                        [&::-webkit-slider-thumb]:hover:bg-emerald-400
+                        [&::-moz-range-thumb]:w-3 
+                        [&::-moz-range-thumb]:h-3 
+                        [&::-moz-range-thumb]:rounded-full 
+                        [&::-moz-range-thumb]:bg-emerald-500
+                        [&::-moz-range-thumb]:border-0
+                        [&::-moz-range-thumb]:cursor-pointer">
+                <span class="text-xs text-zinc-500 min-w-[2.5rem] text-right">{{volume}}%</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Playlist Section -->
+    <section class="pb-4">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-base md:text-lg font-semibold">Lista de reproducción</h3>
+            <span class="text-xs md:text-sm text-zinc-500">{{playlist.length}} canciones</span>
+        </div>
+
+        <div class="space-y-1">
+            @for(song of playlist; track song.id) {
+            <div (click)="playSong(song)"
+                class="group flex items-center gap-2 md:gap-4 p-2 md:p-3 rounded-lg hover:bg-zinc-900 transition-colors cursor-pointer"
+                [class.bg-zinc-900]="currentSong?.id === song.id" [class.border-l-2]="currentSong?.id === song.id"
+                [class.border-emerald-500]="currentSong?.id === song.id && !isFavoritesPlaying"
+                [class.border-red-500]="currentSong?.id === song.id && isFavoritesPlaying"
+                [class.pl-[10px]]="currentSong?.id === song.id">
+
+                <div class="w-6 md:w-8 flex items-center justify-center flex-shrink-0">
+                    <span class="text-xs md:text-sm text-zinc-500 group-hover:hidden"
+                        [class.hidden]="currentSong?.id === song.id">
+                        {{song.id}}
+                    </span>
+                    <button (click)="$event.stopPropagation(); playSong(song)"
+                        class="hover:scale-110 transition-transform"
+                        [ngClass]="isFavoritesPlaying ? 'text-red-400' : 'text-emerald-400'"
+                        [ngClass]="currentSong?.id === song.id ? 'block' : 'hidden group-hover:block'">
+                        <i class='bx text-lg md:text-xl'
+                            [class]="(isPlaying && currentSong?.id === song.id) ? 'bx-pause' : 'bx-play'"></i>
+                    </button>
+                </div>
+
+                <div class="flex-grow min-w-0">
+                    <p class="text-sm md:text-base font-medium truncate"
+                        [class.text-emerald-400]="currentSong?.id === song.id && !isFavoritesPlaying"
+                        [class.text-red-400]="currentSong?.id === song.id && isFavoritesPlaying">
+                        {{song.title}}
+                    </p>
+                    <p class="text-xs text-zinc-500 truncate">{{song.artist}}</p>
+                </div>
+
+                <span class="text-xs md:text-sm text-zinc-500 hidden sm:block">{{song.duration}}</span>
+
+                <div class="flex items-center gap-1 md:gap-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                    [class.opacity-100]="currentSong?.id === song.id">
+                    <button (click)="$event.stopPropagation(); toggleFavorite(song)"
+                        class="p-1.5 md:p-2 hover:bg-zinc-800 rounded-full transition-colors" title="Favorito">
+                        <i class='bx text-base md:text-lg'
+                            [class]="isFavorite(song.id) ? 'bxs-heart text-red-500' : 'bx-heart'"></i>
+                    </button>
+                    <button (click)="$event.stopPropagation(); downloadMusic(song)"
+                        class="p-1.5 md:p-2 hover:bg-zinc-800 rounded-full transition-colors" title="Descargar">
+                        <i class='bx bxs-download text-base md:text-lg'></i>
+                    </button>
+                </div>
+            </div>
+            }
+        </div>
+    </section>
+</main>
