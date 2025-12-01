@@ -1,12 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Song } from './playlist.service';
+import { MusicApiService } from './music-api.service';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlayerService {
   private audio = new Audio();
+  private toastService = inject(ToastService);
 
   // Estado del reproductor (observables para que los componentes se suscriban)
   private currentSongSubject = new BehaviorSubject<Song | null>(null);
@@ -32,7 +35,7 @@ export class PlayerService {
   repeatMode$ = this.repeatModeSubject.asObservable();
   isFavoritesPlaying$ = this.isFavoritesPlayingSubject.asObservable();
 
-  constructor() {
+  constructor(private musicApi: MusicApiService) {
     this.initializeAudioListeners();
   }
 
@@ -76,9 +79,28 @@ export class PlayerService {
     } else {
       // Reproducir nueva canción
       this.currentSongSubject.next(song);
-      this.audio.src = song.url;
-      this.audio.load();
-      this.play();
+      this.toastService.success(`🎵 ${song.title} - ${song.artist}`);
+
+      if (song.url) {
+        this.audio.src = song.url;
+        this.audio.load();
+        this.play();
+      } else {
+        // Fetch stream URL if missing (Piped)
+        this.musicApi.getStreamUrl(song.id as string).subscribe(url => {
+          if (url) {
+            song.url = url;
+            song.isStreamUrlFetched = true;
+            this.audio.src = url;
+            this.audio.load();
+            this.play();
+          } else {
+            console.error('No se pudo obtener el audio para:', song.title);
+            this.toastService.error('No se pudo reproducir esta canción');
+            // Try next track or show error
+          }
+        });
+      }
     }
   }
 

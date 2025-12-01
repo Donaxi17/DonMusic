@@ -1,21 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { SeoService } from '../../services/seo.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  private router = inject(Router);
+  private seoService = inject(SeoService);
+
   requestArtist = '';
   requestSong = '';
   requestMessage = '';
 
-  constructor(private router: Router) { }
+  ngOnInit() {
+    this.seoService.setSeoData(
+      'Inicio',
+      'Bienvenido a DonMusica. Escucha y descarga tu música favorita gratis. La mejor calidad de sonido y los artistas del momento.'
+    );
+  }
 
   navigateToArtists(): void {
     this.router.navigate(['/artists']);

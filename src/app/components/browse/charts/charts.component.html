@@ -1,0 +1,75 @@
+<div class="space-y-6 md:space-y-8 animate-fade-in pb-24">
+    <header class="mb-4 md:mb-8">
+        <h2
+            class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
+            Rankings por País
+        </h2>
+        <p class="text-zinc-400 mt-1 md:mt-2 text-sm md:text-base">Lo más sonado en cada rincón del mundo.</p>
+    </header>
+
+    <!-- Country Selector -->
+    <div class="flex gap-3 md:gap-4 overflow-x-auto pb-2 md:pb-4 scrollbar-hide">
+        <button *ngFor="let country of countries" (click)="selectCountry(country.code)"
+            [class.bg-blue-600]="selectedCountry === country.code" [class.text-white]="selectedCountry === country.code"
+            [class.bg-zinc-800]="selectedCountry !== country.code"
+            [class.text-zinc-400]="selectedCountry !== country.code"
+            class="px-4 py-2 md:px-6 md:py-3 rounded-full md:rounded-xl font-bold transition-all hover:scale-105 flex items-center gap-2 min-w-max text-sm md:text-base">
+            <span class="text-lg md:text-xl">{{country.flag}}</span> {{country.name}}
+        </button>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-6 md:gap-8">
+        <!-- Chart List -->
+        <div class="flex-1 space-y-1 md:space-y-2">
+            <div *ngIf="loading()" class="flex justify-center py-8">
+                <div class="animate-spin rounded-full h-10 w-10 md:h-12 md:w-12 border-t-2 border-b-2 border-blue-500">
+                </div>
+            </div>
+
+            <div *ngFor="let song of chartSongs(); let i = index" (click)="playSong(song)"
+                class="flex items-center gap-3 md:gap-4 p-2 md:p-3 rounded-lg hover:bg-zinc-900 transition-colors group cursor-pointer border border-transparent hover:border-zinc-800">
+                <span class="text-base md:text-lg font-bold text-zinc-600 w-6 md:w-8 text-center">{{i + 1}}</span>
+                <div class="w-10 h-10 md:w-12 md:h-12 bg-zinc-800 rounded flex-shrink-0 overflow-hidden shadow-md">
+                    <img [src]="song.img" alt="Cover" loading="lazy" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h4
+                        class="font-bold truncate text-sm md:text-base text-white group-hover:text-blue-400 transition-colors">
+                        {{song.title}}</h4>
+                    <p class="text-xs md:text-sm text-zinc-500 truncate">{{song.artist}}</p>
+                </div>
+                <button
+                    class="w-8 h-8 md:w-10 md:h-10 rounded-full border border-zinc-700 flex items-center justify-center hover:bg-white hover:text-black transition-colors opacity-0 group-hover:opacity-100 shadow-lg">
+                    <i class='bx bx-play text-xl'></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Sidebar Ad -->
+        <div class="w-full lg:w-80 flex-shrink-0">
+            <div class="sticky top-24 md:top-32">
+                <app-ad-banner adType="Anuncio Lateral" class="hidden md:block"></app-ad-banner>
+
+                <div *ngIf="chartSongs().length > 0"
+                    class="bg-zinc-900/50 rounded-xl p-4 md:p-6 mt-4 md:mt-6 border border-zinc-800">
+                    <h3 class="font-bold mb-3 md:mb-4 text-zinc-300 text-sm md:text-base">Destacado en
+                        {{selectedCountry}}</h3>
+                    <div class="aspect-square bg-zinc-800 rounded-lg mb-3 md:mb-4 shadow-lg overflow-hidden relative group cursor-pointer"
+                        (click)="playSong(chartSongs()[0])">
+                        <img [src]="chartSongs()[0].img" alt="Featured" loading="lazy"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div
+                            class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
+                            <i
+                                class='bx bx-play-circle text-5xl text-white opacity-80 group-hover:opacity-100 transition-opacity scale-90 group-hover:scale-100 duration-300'></i>
+                        </div>
+                    </div>
+                    <button (click)="playSong(chartSongs()[0])"
+                        class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2.5 md:py-3 rounded-lg font-bold transition-colors shadow-lg shadow-blue-900/20 text-sm md:text-base">
+                        Escuchar Top 1
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

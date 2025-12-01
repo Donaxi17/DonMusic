@@ -1,0 +1,56 @@
+<div class="space-y-6 md:space-y-8 animate-fade-in pb-24">
+    <header class="mb-4 md:mb-8">
+        <h2
+            class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
+            Explorar por Género
+        </h2>
+        <p class="text-zinc-400 mt-1 md:mt-2 text-sm md:text-base">Descubre música según tu estado de ánimo.</p>
+    </header>
+
+    <div *ngIf="loading()" class="flex justify-center py-12">
+        <div class="animate-spin rounded-full h-10 w-10 md:h-12 md:w-12 border-t-2 border-b-2 border-green-500"></div>
+    </div>
+
+    <!-- Genre Grid -->
+    <div *ngIf="!loading()" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+        <div *ngFor="let genre of genres()" (click)="selectGenre(genre)"
+            [class]="getGenreColor(genre) + ' rounded-lg md:rounded-xl p-4 md:p-6 cursor-pointer hover:scale-105 transition-transform shadow-lg relative overflow-hidden group'">
+            <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors"></div>
+            <h3 class="text-lg md:text-2xl font-bold text-white relative z-10 capitalize">{{genre}}</h3>
+        </div>
+    </div>
+
+    <!-- Selected Genre Tracks -->
+    <div *ngIf="selectedGenre()" class="mt-8 md:mt-12">
+        <div class="flex justify-between items-center mb-4 md:mb-6">
+            <h3 class="text-xl md:text-2xl font-bold capitalize">{{selectedGenre()}}</h3>
+            <button *ngIf="tracks().length > 0" (click)="playAll()"
+                class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 md:px-6 md:py-3 rounded-full text-sm md:text-base font-bold flex items-center gap-2 transition-all hover:scale-105 shadow-lg shadow-green-500/20">
+                <i class='bx bx-play'></i> Reproducir
+            </button>
+        </div>
+
+        <div *ngIf="loadingTracks()" class="flex justify-center py-12">
+            <div class="animate-spin rounded-full h-10 w-10 md:h-12 md:w-12 border-t-2 border-b-2 border-green-500">
+            </div>
+        </div>
+
+        <div *ngIf="!loadingTracks()"
+            class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6">
+            <div *ngFor="let track of tracks()" (click)="playSong(track)" class="group cursor-pointer">
+                <div class="relative aspect-square rounded-lg overflow-hidden bg-zinc-800 mb-2 md:mb-3 shadow-lg">
+                    <img [src]="track.img" [alt]="track.title" loading="lazy"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div
+                        class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <i
+                            class='bx bx-play-circle text-4xl md:text-5xl text-white scale-50 group-hover:scale-100 transition-transform duration-300'></i>
+                    </div>
+                </div>
+                <h4 class="font-bold text-sm md:text-base truncate group-hover:text-green-400 transition-colors">
+                    {{track.title}}</h4>
+                <p class="text-xs md:text-sm text-zinc-500 truncate">{{track.artist}}</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -10,7 +10,8 @@ export interface Song {
   url: string;
   album?: string; // Opcional: nombre del álbum
   genre?: string; // Opcional: género musical
-  license?: string; // Opcional: licencia Creative Commons (para Jamendo)
+  license?: string;
+  isStreamUrlFetched?: boolean;
 }
 
 export interface Playlist {

@@ -5,7 +5,7 @@
         <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
             <h1 class="text-xl md:text-2xl font-bold bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent cursor-pointer"
                 (click)="navigateTo('/')">
-                DonMusic
+                DonMusica
             </h1>
             <nav class="hidden md:flex gap-8 text-base font-medium">
                 <button (click)="navigateTo('/')" [class.text-emerald-400]="isActive('/')"
@@ -19,15 +19,20 @@
                     class="hover:text-emerald-400 transition-colors px-3 py-2 rounded-lg hover:bg-zinc-900">
                     Artistas
                 </button>
-                <button (click)="navigateTo('/discover')" [class.text-emerald-400]="isActive('/discover')"
-                    [class.text-zinc-400]="!isActive('/discover')"
+                <button (click)="navigateTo('/browse')" [class.text-emerald-400]="isActive('/browse')"
+                    [class.text-zinc-400]="!isActive('/browse')"
                     class="hover:text-emerald-400 transition-colors px-3 py-2 rounded-lg hover:bg-zinc-900 flex items-center gap-2">
-                    <i class='bx bx-world'></i> Descubre
+                    <i class='bx bx-compass'></i> Explorar
                 </button>
                 <button (click)="navigateTo('/videos')" [class.text-red-400]="isActive('/videos')"
                     [class.text-zinc-400]="!isActive('/videos')"
                     class="hover:text-red-400 transition-colors px-3 py-2 rounded-lg hover:bg-zinc-900 flex items-center gap-2">
                     <i class='bx bxl-youtube'></i> Videos
+                </button>
+                <button (click)="navigateTo('/blog')" [class.text-emerald-400]="isActive('/blog')"
+                    [class.text-zinc-400]="!isActive('/blog')"
+                    class="hover:text-emerald-400 transition-colors px-3 py-2 rounded-lg hover:bg-zinc-900 flex items-center gap-2">
+                    <i class='bx bx-news'></i> Blog
                 </button>
                 <button (click)="navigateTo('/radio')" [class.text-emerald-400]="isActive('/radio')"
                     [class.text-zinc-400]="!isActive('/radio')"
@@ -105,10 +110,10 @@
             <i class='bx bx-music text-2xl'></i>
             <span class="text-[10px]">Artistas</span>
         </button>
-        <button (click)="navigateTo('/discover')" class="flex flex-col items-center gap-1 w-16"
-            [class.text-emerald-400]="isActive('/discover')" [class.text-zinc-400]="!isActive('/discover')">
-            <i class='bx bx-world text-2xl'></i>
-            <span class="text-[10px]">Descubre</span>
+        <button (click)="navigateTo('/browse')" class="flex flex-col items-center gap-1 w-16"
+            [class.text-emerald-400]="isActive('/browse')" [class.text-zinc-400]="!isActive('/browse')">
+            <i class='bx bx-compass text-2xl'></i>
+            <span class="text-[10px]">Explorar</span>
         </button>
         <button (click)="navigateTo('/videos')" class="flex flex-col items-center gap-1 w-16"
             [class.text-red-400]="isActive('/videos')" [class.text-zinc-400]="!isActive('/videos')">

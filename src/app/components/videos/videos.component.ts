@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { SafePipe } from '../../pipes/safe.pipe';
+import { SeoService } from '../../services/seo.service';
 
 interface Video {
   id: string;
@@ -19,6 +20,8 @@ interface Video {
   styleUrl: './videos.component.css'
 })
 export class VideosComponent {
+  private seoService = inject(SeoService);
+
   currentVideoUrl = signal<string | null>(null);
   searchQuery = signal<string>('');
   isLoading = signal<boolean>(false);
@@ -52,6 +55,11 @@ export class VideosComponent {
   ]);
 
   constructor(private http: HttpClient) {
+    this.seoService.setSeoData(
+      'Videos Musicales',
+      'Disfruta de los videoclips oficiales de tus artistas favoritos. Calidad HD y sin interrupciones.'
+    );
+
     this.searchQuery.set('Feid');
     this.search();
   }

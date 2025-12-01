@@ -1,7 +1,8 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Artist, ARTISTS_DATA } from '../../models/artists.data';
+import { SeoService } from '../../services/seo.service';
 
 @Component({
   selector: 'app-artists',
@@ -10,7 +11,10 @@ import { Artist, ARTISTS_DATA } from '../../models/artists.data';
   templateUrl: './artists.component.html',
   styleUrl: './artists.component.css'
 })
-export class ArtistsComponent {
+export class ArtistsComponent implements OnInit {
+  private router = inject(Router);
+  private seoService = inject(SeoService);
+
   allArtists: Artist[] = ARTISTS_DATA;
   selectedGenre = signal<string>('all');
 
@@ -36,7 +40,12 @@ export class ArtistsComponent {
     );
   });
 
-  constructor(private router: Router) { }
+  ngOnInit() {
+    this.seoService.setSeoData(
+      'Artistas',
+      'Descubre a los mejores artistas en DonMusica. Bad Bunny, Karol G, Feid y muchos más. Explora sus discografías completas.'
+    );
+  }
 
   selectArtist(artist: Artist): void {
     // Navegar al reproductor con el ID del artista

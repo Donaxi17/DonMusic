@@ -1,71 +1,105 @@
-<div class="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12 pb-24 md:pb-12">
-    <!-- Header -->
-    <div class="mb-10 text-center">
-        <h2
-            class="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent">
-            Explora Nuestros Artistas
-        </h2>
-        <p class="text-zinc-400 text-lg">Selecciona un artista para ver su música</p>
+<div class="min-h-screen bg-zinc-950 pb-24">
+    <!-- Hero Section -->
+    <div class="relative h-48 md:h-80 w-full overflow-hidden mb-8 md:mb-12">
+        <div class="absolute inset-0 bg-gradient-to-r from-emerald-900/40 to-black z-10"></div>
+        <img src="https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=2070&auto=format&fit=crop"
+            alt="Artists Hero" class="w-full h-full object-cover opacity-60">
+        <div class="absolute inset-0 flex flex-col justify-center px-4 md:px-12 z-20 max-w-7xl mx-auto">
+            <h1 class="text-3xl md:text-6xl font-bold text-white mb-2 tracking-tight">
+                Descubre <span class="text-emerald-400">Artistas</span>
+            </h1>
+            <p class="text-zinc-300 text-sm md:text-xl max-w-2xl leading-relaxed">
+                Explora el talento que define el sonido de hoy. Desde leyendas hasta las nuevas promesas.
+            </p>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 h-16 md:h-24 bg-gradient-to-t from-zinc-950 to-transparent z-20">
+        </div>
     </div>
 
-    <!-- Genre Filter -->
-    <div class="mb-8">
-        <div class="flex flex-wrap justify-center gap-3">
-            @for (genre of genres; track genre.value) {
-            <button class="px-4 py-2 rounded-full font-medium transition-all duration-300"
-                [class.bg-gradient-to-r]="selectedGenre() === genre.value"
-                [class.from-emerald-400]="selectedGenre() === genre.value"
-                [class.to-green-500]="selectedGenre() === genre.value"
-                [class.text-black]="selectedGenre() === genre.value"
-                [class.bg-zinc-800]="selectedGenre() !== genre.value"
-                [class.text-zinc-300]="selectedGenre() !== genre.value"
-                [class.hover:bg-zinc-700]="selectedGenre() !== genre.value"
-                [class.shadow-lg]="selectedGenre() === genre.value"
-                [class.shadow-emerald-500]="selectedGenre() === genre.value"
-                [class.scale-105]="selectedGenre() === genre.value" (click)="onGenreChange(genre.value)">
-                {{ genre.label }}
-            </button>
+    <div class="max-w-7xl mx-auto px-4 md:px-6">
+        <!-- Genre Filter -->
+        <div class="mb-6 md:mb-10 overflow-x-auto pb-2 md:pb-4 scrollbar-hide">
+            <div class="flex flex-nowrap md:flex-wrap gap-2 md:gap-3 min-w-max md:min-w-0">
+                @for (genre of genres; track genre.value) {
+                <button
+                    class="px-4 py-2 md:px-5 md:py-2.5 rounded-full font-medium text-xs md:text-sm transition-all duration-300 border backdrop-blur-md whitespace-nowrap"
+                    [class.bg-emerald-500]="selectedGenre() === genre.value"
+                    [class.border-emerald-500]="selectedGenre() === genre.value"
+                    [class.text-black]="selectedGenre() === genre.value"
+                    [class.bg-zinc-900]="selectedGenre() !== genre.value"
+                    [class.border-zinc-700]="selectedGenre() !== genre.value"
+                    [class.text-zinc-300]="selectedGenre() !== genre.value"
+                    [class.hover:border-emerald-400]="selectedGenre() !== genre.value"
+                    [class.hover:text-white]="selectedGenre() !== genre.value" (click)="onGenreChange(genre.value)">
+                    {{ genre.label }}
+                </button>
+                }
+            </div>
+
+            <!-- Results Counter -->
+            <p class="text-zinc-500 text-xs md:text-sm mt-3 font-medium px-1">
+                Mostrando <span class="text-emerald-400">{{ artists().length }}</span> talentos encontrados
+            </p>
+        </div>
+
+        <!-- Artists Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6">
+            @for(artist of artists(); track artist.id) {
+            <div (click)="selectArtist(artist)"
+                class="group relative bg-zinc-900/40 rounded-xl md:rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-emerald-900/20">
+
+                <!-- Image Container -->
+                <div class="aspect-[4/5] overflow-hidden relative">
+                    <img [src]="artist.image" [alt]="artist.name" loading="lazy"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+
+                    <!-- Overlay Gradient -->
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300">
+                    </div>
+
+                    <!-- Play Button (appears on hover) -->
+                    <div
+                        class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 scale-90 group-hover:scale-100">
+                        <div
+                            class="w-12 h-12 md:w-14 md:h-14 bg-emerald-500 rounded-full flex items-center justify-center shadow-lg shadow-emerald-500/40 text-black transform transition-transform hover:scale-110">
+                            <i class='bx bx-play text-2xl md:text-3xl ml-1'></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info -->
+                <div
+                    class="absolute bottom-0 left-0 right-0 p-3 md:p-4 transform translate-y-1 md:translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                    <h3 class="text-base md:text-xl font-bold text-white mb-0.5 md:mb-1 leading-tight truncate">
+                        {{artist.name}}</h3>
+                    <p
+                        class="text-emerald-400 text-[10px] md:text-xs font-bold uppercase tracking-wider mb-0.5 md:mb-1">
+                        {{artist.genre}}</p>
+                    <p
+                        class="text-zinc-400 text-[10px] md:text-xs line-clamp-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75 hidden md:block">
+                        {{artist.description}}</p>
+                </div>
+            </div>
             }
         </div>
 
-        <!-- Results Counter -->
-        <div class="text-center mt-4">
-            <p class="text-zinc-400 text-sm">
-                Mostrando <span class="text-emerald-400 font-bold">{{ artists().length }}</span>
-                {{ artists().length === 1 ? 'artista' : 'artistas' }}
-            </p>
-        </div>
-    </div>
-
-    <!-- Artists Grid -->
-    <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
-        @for(artist of artists(); track artist.id) {
-        <div (click)="selectArtist(artist)"
-            class="group cursor-pointer bg-zinc-900/50 border border-zinc-800 rounded-2xl overflow-hidden hover:border-emerald-500/50 transition-all hover:transform hover:scale-105">
-            <div class="aspect-[3/4] overflow-hidden bg-zinc-800">
-                <img [src]="artist.image" [alt]="artist.name"
-                    class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300">
+        <!-- Empty State -->
+        @if (artists().length === 0) {
+        <div class="flex flex-col items-center justify-center py-16 md:py-24 text-center animate-fade-in">
+            <div
+                class="w-16 h-16 md:w-24 md:h-24 bg-zinc-900 rounded-full flex items-center justify-center mb-4 md:mb-6 border border-zinc-800">
+                <i class='bx bx-music text-3xl md:text-4xl text-zinc-600'></i>
             </div>
-            <div class="p-4">
-                <h3 class="text-lg font-bold mb-2 group-hover:text-emerald-400 transition-colors">{{artist.name}}</h3>
-                <p class="text-emerald-400 text-xs mb-3">{{artist.genre}}</p>
-                <p class="text-zinc-400 text-xs">{{artist.description}}</p>
-            </div>
+            <h3 class="text-xl md:text-2xl font-bold text-white mb-2">No encontramos artistas</h3>
+            <p class="text-zinc-500 text-sm md:text-base max-w-md mx-auto mb-6 md:mb-8">
+                Parece que no hay artistas en esta categoría por ahora. Intenta con otro género.
+            </p> <button
+                class="px-6 py-2.5 md:px-8 md:py-3 bg-emerald-500 text-black text-sm md:text-base font-bold rounded-full hover:bg-emerald-400 hover:shadow-lg hover:shadow-emerald-500/20 transition-all transform hover:-translate-y-1"
+                (click)="onGenreChange('all')">
+                Ver Todos
+            </button>
         </div>
         }
     </div>
-
-    <!-- Empty State -->
-    @if (artists().length === 0) {
-    <div class="text-center py-16">
-        <div class="text-6xl mb-4">🎵</div>
-        <h3 class="text-xl font-bold text-zinc-300 mb-2">No se encontraron artistas</h3>
-        <p class="text-zinc-500">Intenta seleccionar otro género</p>
-        <button
-            class="mt-6 px-6 py-3 bg-gradient-to-r from-emerald-400 to-green-500 text-black font-bold rounded-full hover:shadow-lg hover:shadow-emerald-500/50 transition-all"
-            (click)="onGenreChange('all')">
-            Ver Todos los Artistas
-        </button>
-    </div>
-    }
 </div>

@@ -5,33 +5,80 @@
     {
       "name": "app",
       "installMode": "prefetch",
-      "resources": [
-        "/favicon.ico",
-        "/index.html",
-        "/*.css",
-        "/*.js"
-      ]
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/manifest.webmanifest",
+          "/*.css",
+          "/*.js"
+        ]
+      }
     },
     {
       "name": "assets",
       "installMode": "lazy",
       "updateMode": "prefetch",
-      "resources": [
-        "/assets/**",
-        "/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"
-      ]
+      "resources": {
+        "files": [
+          "/assets/**/*",
+          "/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2|ico)"
+        ]
+      }
+    },
+    {
+      "name": "fonts",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "urls": [
+          "https://fonts.googleapis.com/**",
+          "https://fonts.gstatic.com/**",
+          "https://unpkg.com/boxicons@2.1.4/**"
+        ]
+      }
     }
   ],
   "dataGroups": [
     {
+      "name": "api-cache",
+      "urls": [
+        "https://itunes.apple.com/search**",
+        "https://pipedapi.kavin.rocks/**"
+      ],
+      "cacheConfig": {
+        "maxSize": 100,
+        "maxAge": "1h",
+        "timeout": "10s",
+        "strategy": "freshness"
+      }
+    },
+    {
+      "name": "image-cache",
+      "urls": [
+        "https://images.unsplash.com/**",
+        "https://picsum.photos/**",
+        "https://is1-ssl.mzstatic.com/**",
+        "https://*.mzstatic.com/**"
+      ],
+      "cacheConfig": {
+        "maxSize": 200,
+        "maxAge": "7d",
+        "timeout": "5s",
+        "strategy": "performance"
+      }
+    },
+    {
       "name": "music-cache",
       "urls": [
         "/**/*.mp3",
+        "/**/*.m4a",
         "/assets/audio/**"
       ],
       "cacheConfig": {
         "maxSize": 50,
-        "maxAge": "7d",
+        "maxAge": "30d",
         "timeout": "10s",
         "strategy": "performance"
       }
