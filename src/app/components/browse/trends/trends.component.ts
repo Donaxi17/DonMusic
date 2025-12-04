@@ -19,9 +19,17 @@ export class TrendsComponent implements OnInit {
     trendingSongs = signal<Song[]>([]);
     loading = signal(true);
     loadingMore = signal(false);
-    currentPage = 1;
+    currentPage = 0;
     itemsPerPage = 10;
     hasMore = true;
+    allSongs: Song[] = [];
+
+    // Filter options
+    selectedRegion = signal<'CO' | 'US'>('CO');
+    regions = [
+        { code: 'CO' as const, name: 'Colombia 🇨🇴', flag: '🇨🇴' },
+        { code: 'US' as const, name: 'Mundial 🌎', flag: '🌎' }
+    ];
 
     constructor(
         private musicApi: MusicApiService,
@@ -29,19 +37,48 @@ export class TrendsComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        // SEO optimization with keywords and description
         this.seoService.setSeoData(
-            'Tendencias Musicales',
-            'Las canciones más populares del momento. Descubre qué está sonando ahora en todo el mundo.'
+            'Tendencias Musicales Globales 2025 | Top Canciones del Momento | DonMusic',
+            'Descubre las tendencias musicales más populares del 2025. Escucha las canciones más escuchadas en todo el mundo, desde reggaetón hasta pop internacional. ¡Música sin límites!'
         );
 
         this.loadInitialData();
     }
 
     loadInitialData() {
-        this.musicApi.getTrending('US').subscribe(songs => {
-            this.trendingSongs.set(songs);
-            this.loading.set(false);
+        this.loading.set(true);
+        const region = this.selectedRegion();
+
+        // Use the optimized hybrid strategy from service
+        this.musicApi.getTrending(region).subscribe({
+            next: (songs) => {
+                console.log('Trending songs received:', songs.length);
+                if (songs && songs.length > 0) {
+                    this.allSongs = songs;
+                    // Load first page
+                    this.trendingSongs.set(songs.slice(0, this.itemsPerPage));
+                    this.hasMore = songs.length > this.itemsPerPage;
+                    this.loading.set(false);
+                } else {
+                    this.loading.set(false);
+                    this.hasMore = false;
+                }
+            },
+            error: (err) => {
+                console.error('Error loading trends:', err);
+                this.loading.set(false);
+            }
         });
+    }
+
+    // Change region filter
+    changeRegion(region: 'CO' | 'US') {
+        if (this.selectedRegion() === region) return;
+
+        this.selectedRegion.set(region);
+        this.currentPage = 0;
+        this.loadInitialData();
     }
 
     loadMore() {
@@ -50,25 +87,31 @@ export class TrendsComponent implements OnInit {
         this.loadingMore.set(true);
         this.currentPage++;
 
-        // Simulate loading more data (in real app, you'd fetch next page)
+        // Simulate loading delay for better UX
         setTimeout(() => {
-            this.musicApi.getTrending('US').subscribe(newSongs => {
-                // Simulate pagination by taking different slices
-                const start = this.currentPage * this.itemsPerPage;
-                const end = start + this.itemsPerPage;
-                const paginatedSongs = newSongs.slice(start, end);
+            const start = (this.currentPage + 1) * this.itemsPerPage;
+            const end = start + this.itemsPerPage;
+            const nextBatch = this.allSongs.slice(start, end);
 
-                if (paginatedSongs.length === 0) {
-                    this.hasMore = false;
-                } else {
-                    this.trendingSongs.update(songs => [...songs, ...paginatedSongs]);
-                }
-                this.loadingMore.set(false);
-            });
-        }, 500);
+            if (nextBatch.length === 0) {
+                this.hasMore = false;
+            } else {
+                this.trendingSongs.update(songs => [...songs, ...nextBatch]);
+            }
+            this.loadingMore.set(false);
+        }, 300);
     }
 
-    playSong(song: Song) {
-        this.playerService.playSong(song);
+    // Method intentionally does nothing - visual only as requested
+    onSongClick(song: Song, event: Event) {
+        // Visual only - no action on click as requested by user
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    // Image error handler - fallback to placeholder
+    onImageError(event: Event) {
+        const img = event.target as HTMLImageElement;
+        img.src = 'https://placehold.co/300x300/18181b/10b981?text=🎵';
     }
 }

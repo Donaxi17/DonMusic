@@ -2,6 +2,8 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MusicApiService } from '../../../services/music-api.service';
 
+import { SeoService } from '../../../services/seo.service';
+
 @Component({
     selector: 'app-playlists',
     standalone: true,
@@ -23,7 +25,7 @@ import { MusicApiService } from '../../../services/music-api.service';
         <div *ngIf="!loading()" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <div *ngFor="let playlist of playlists()" class="group cursor-pointer">
                 <div class="relative aspect-square rounded-lg overflow-hidden bg-zinc-800 mb-3 shadow-lg">
-                    <img [src]="playlist.img" [alt]="playlist.name" class="w-full h-full object-cover">
+                    <img [src]="playlist.img" [alt]="playlist.name" (error)="handleImageError($event)" class="w-full h-full object-cover">
                     <div
                         class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                         <i
@@ -41,12 +43,31 @@ export class PlaylistsComponent implements OnInit {
     playlists = signal<any[]>([]);
     loading = signal(true);
 
-    constructor(private musicApi: MusicApiService) { }
+    constructor(
+        private musicApi: MusicApiService,
+        private seoService: SeoService
+    ) { }
 
     ngOnInit() {
-        this.musicApi.getFeaturedPlaylists('US', 24).subscribe(data => {
-            this.playlists.set(data);
-            this.loading.set(false);
+        this.seoService.setSeoData(
+            'Playlists Destacadas 2025 | Spotify Curated | DonMusic',
+            'Escucha las mejores playlists curadas del 2025. Listas de reproducción para cada momento: fiesta, relax, ejercicio y más. Actualizadas diariamente.'
+        );
+
+        this.musicApi.getFeaturedPlaylists('US', 24).subscribe({
+            next: (data) => {
+                this.playlists.set(data);
+                this.loading.set(false);
+            },
+            error: (err) => {
+                console.error('Error loading playlists:', err);
+                this.loading.set(false);
+            }
         });
+    }
+
+    handleImageError(event: Event) {
+        const img = event.target as HTMLImageElement;
+        img.src = 'https://placehold.co/300x300/18181b/3b82f6?text=Playlist';
     }
 }

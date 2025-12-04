@@ -79,7 +79,7 @@ export class PlayerService {
     } else {
       // Reproducir nueva canción
       this.currentSongSubject.next(song);
-      this.toastService.success(`🎵 ${song.title} - ${song.artist}`);
+      // this.toastService.success(`🎵 ${song.title} - ${song.artist}`);
 
       if (song.url) {
         this.audio.src = song.url;
@@ -125,6 +125,10 @@ export class PlayerService {
   setPlaylist(songs: Song[], isFavorites: boolean = false): void {
     this.playlistSubject.next(songs);
     this.isFavoritesPlayingSubject.next(isFavorites);
+  }
+
+  resume(): void {
+    this.play();
   }
 
   nextTrack(): void {

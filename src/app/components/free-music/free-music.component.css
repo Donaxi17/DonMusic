@@ -1,0 +1,88 @@
+/* Optimizaciones de rendimiento */
+:host {
+    display: block;
+    contain: layout style paint;
+}
+
+/* Animaciones optimizadas con will-change */
+.genre-button {
+    will-change: transform, background-color;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.genre-button:hover {
+    transform: translateY(-2px);
+}
+
+.song-card {
+    will-change: transform, border-color;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.song-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Skeleton loader para mejor UX */
+.skeleton {
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0.05) 25%,
+            rgba(255, 255, 255, 0.1) 50%,
+            rgba(255, 255, 255, 0.05) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Optimización de imágenes */
+img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+/* Mejoras responsive */
+@media (max-width: 640px) {
+    .genre-button {
+        font-size: 0.875rem;
+        padding: 0.5rem 0.75rem;
+    }
+
+    .song-card {
+        padding: 0.75rem !important;
+    }
+}
+
+/* Lazy loading optimization */
+.lazy-load {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+}
+
+/* Scroll suave */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Accesibilidad */
+.focus-visible:focus {
+    outline: 2px solid #10b981;
+    outline-offset: 2px;
+}
+
+/* Dark mode optimization */
+@media (prefers-color-scheme: dark) {
+    :host {
+        color-scheme: dark;
+    }
+}

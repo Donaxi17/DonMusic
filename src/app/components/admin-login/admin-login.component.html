@@ -1,0 +1,131 @@
+<div class="min-h-screen w-full flex items-center justify-center relative overflow-hidden bg-zinc-950 py-6 px-4">
+    <!-- Animated Background -->
+    <div class="absolute inset-0 overflow-hidden">
+        <!-- Gradient Orbs -->
+        <div
+            class="absolute top-0 -left-4 w-72 h-72 bg-emerald-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob">
+        </div>
+        <div
+            class="absolute top-0 -right-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000">
+        </div>
+        <div
+            class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000">
+        </div>
+
+        <!-- Grid Pattern -->
+        <div class="absolute inset-0 bg-grid-pattern opacity-5"></div>
+    </div>
+
+    <!-- Login Card - Reducido max-w-md a max-w-sm para PC -->
+    <div class="relative z-10 w-full max-w-md my-auto">
+        <!-- Logo/Brand -->
+        <div class="text-center mb-6 md:mb-8 animate-fade-in">
+            <div
+                class="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl shadow-lg shadow-emerald-500/50 mb-3 md:mb-4 transform hover:scale-110 transition-transform duration-300">
+                <i class='bx bx-music text-3xl md:text-4xl text-white'></i>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-bold text-white mb-1 md:mb-2">
+                Panel de <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-600">Administración</span>
+            </h1>
+            <p class="text-zinc-400 text-sm">Accede para gestionar tu contenido</p>
+        </div>
+
+        <!-- Login Form Card -->
+        <div
+            class="bg-zinc-900/50 backdrop-blur-xl rounded-2xl md:rounded-3xl border border-zinc-800/50 shadow-2xl p-6 md:p-8 animate-slide-up">
+            <form (ngSubmit)="onSubmit()" class="space-y-4 md:space-y-5">
+                <!-- Username Field -->
+                <div class="space-y-1.5 md:space-y-2">
+                    <label for="username" class="text-sm font-medium text-zinc-300 flex items-center gap-2">
+                        <i class='bx bx-user text-emerald-400'></i>
+                        Usuario
+                    </label>
+                    <div class="relative group">
+                        <input type="text" id="username" [(ngModel)]="username" name="username"
+                            (keypress)="onKeyPress($event)" autocomplete="username" required
+                            class="w-full px-4 py-2.5 md:py-3 bg-zinc-800/50 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all outline-none group-hover:border-zinc-600 text-sm md:text-base"
+                            placeholder="Ingresa tu usuario" [disabled]="isLoading()">
+                        <div
+                            class="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-500/0 via-emerald-500/5 to-emerald-500/0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="space-y-1.5 md:space-y-2">
+                    <label for="password" class="text-sm font-medium text-zinc-300 flex items-center gap-2">
+                        <i class='bx bx-lock-alt text-emerald-400'></i>
+                        Contraseña
+                    </label>
+                    <div class="relative group">
+                        <input [type]="showPassword() ? 'text' : 'password'" id="password" [(ngModel)]="password"
+                            name="password" (keypress)="onKeyPress($event)" autocomplete="current-password" required
+                            class="w-full px-4 py-2.5 md:py-3 pr-12 bg-zinc-800/50 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all outline-none group-hover:border-zinc-600 text-sm md:text-base"
+                            placeholder="Ingresa tu contraseña" [disabled]="isLoading()">
+
+                        <!-- Toggle Password Visibility -->
+                        <button type="button" (click)="togglePasswordVisibility()"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-emerald-400 transition-colors p-1"
+                            [disabled]="isLoading()">
+                            <i [class]="showPassword() ? 'bx bx-hide' : 'bx bx-show'" class="text-lg md:text-xl"></i>
+                        </button>
+
+                        <div
+                            class="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-500/0 via-emerald-500/5 to-emerald-500/0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Error Message -->
+                @if (errorMessage()) {
+                <div class="p-3 md:p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-2 md:gap-3 animate-fade-in"
+                    [class.shake]="shakeError()">
+                    <i class='bx bx-error-circle text-red-400 text-lg md:text-xl'></i>
+                    <p class="text-red-400 text-xs md:text-sm font-medium">{{ errorMessage() }}</p>
+                </div>
+                }
+
+                <!-- Submit Button -->
+                <button type="submit" [disabled]="isLoading()"
+                    class="w-full py-3 md:py-4 bg-gradient-to-r from-emerald-600 to-emerald-500 text-white font-bold rounded-xl hover:from-emerald-500 hover:to-emerald-400 transition-all transform hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-500/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2 relative overflow-hidden group text-sm md:text-base">
+
+                    <!-- Loading Spinner -->
+                    @if (isLoading()) {
+                    <div class="flex items-center gap-2">
+                        <div
+                            class="w-4 h-4 md:w-5 md:h-5 border-2 border-white/30 border-t-white rounded-full animate-spin">
+                        </div>
+                        <span>Verificando...</span>
+                    </div>
+                    } @else {
+                    <div class="flex items-center gap-2">
+                        <i class='bx bx-log-in text-lg md:text-xl'></i>
+                        <span>Iniciar Sesión</span>
+                    </div>
+                    }
+
+                    <!-- Shine Effect -->
+                    <div
+                        class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent">
+                    </div>
+                </button>
+
+                <!-- Additional Info -->
+                <div class="pt-2 md:pt-3 text-center">
+                    <p class="text-[10px] md:text-xs text-zinc-500">
+                        Credenciales: <span class="text-emerald-400 font-mono">admin / donmusica2025</span>
+                    </p>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer Info -->
+        <div class="mt-4 md:mt-6 text-center animate-fade-in animation-delay-200">
+            <p class="text-zinc-500 text-xs flex items-center justify-center gap-1.5">
+                <i class='bx bx-shield-quarter text-emerald-400 text-sm'></i>
+                Acceso seguro y protegido
+            </p>
+        </div>
+    </div>
+</div>

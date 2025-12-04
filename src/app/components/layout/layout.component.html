@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-zinc-950 text-white pb-32 md:pb-24">
+<div class="min-h-screen bg-zinc-950 text-white">
 
     <!-- Header/Menu - Desktop -->
     <header class="border-b border-zinc-700 bg-black/80 backdrop-blur-md sticky top-0 z-50 shadow-lg">
@@ -29,36 +29,79 @@
                     class="hover:text-red-400 transition-colors px-3 py-2 rounded-lg hover:bg-zinc-900 flex items-center gap-2">
                     <i class='bx bxl-youtube'></i> Videos
                 </button>
-                <button (click)="navigateTo('/blog')" [class.text-emerald-400]="isActive('/blog')"
-                    [class.text-zinc-400]="!isActive('/blog')"
-                    class="hover:text-emerald-400 transition-colors px-3 py-2 rounded-lg hover:bg-zinc-900 flex items-center gap-2">
-                    <i class='bx bx-news'></i> Blog
-                </button>
-                <button (click)="navigateTo('/radio')" [class.text-emerald-400]="isActive('/radio')"
-                    [class.text-zinc-400]="!isActive('/radio')"
-                    class="hover:text-emerald-400 transition-colors px-3 py-2 rounded-lg hover:bg-zinc-900 flex items-center gap-2">
-                    <i class='bx bx-radio'></i> Radio
-                </button>
-                <button (click)="navigateTo('/playlists')" [class.text-emerald-400]="isActive('/playlists')"
-                    [class.text-zinc-400]="!isActive('/playlists')"
-                    class="hover:text-emerald-400 transition-colors px-3 py-2 rounded-lg hover:bg-zinc-900 flex items-center gap-2">
-                    <i class='bx bx-list-ul'></i> Playlists
-                </button>
+
+                <!-- More Menu Dropdown -->
+                <div class="relative">
+                    <button (click)="toggleMoreMenu()"
+                        [class.text-emerald-400]="isActive('/blog') || isActive('/radio') || isActive('/playlists') || isActive('/saved-lyrics') || isActive('/sin-copyright')"
+                        [class.text-zinc-400]="!(isActive('/blog') || isActive('/radio') || isActive('/playlists') || isActive('/saved-lyrics') || isActive('/sin-copyright'))"
+                        class="hover:text-emerald-400 transition-colors px-3 py-2 rounded-lg hover:bg-zinc-900 flex items-center gap-2">
+                        <span>Más</span>
+                        <i class='bx' [class.bx-chevron-down]="!showMoreMenu" [class.bx-chevron-up]="showMoreMenu"></i>
+                    </button>
+
+                    <!-- Dropdown Content -->
+                    <div *ngIf="showMoreMenu"
+                        class="absolute top-full right-0 mt-2 w-56 bg-zinc-900 border border-zinc-800 rounded-xl shadow-xl overflow-hidden animate-fade-in z-50">
+
+                        <!-- Sin Copyright - Destacado -->
+                        <button (click)="navigateTo('/sin-copyright'); closeMoreMenu()"
+                            [class.bg-emerald-600]="isActive('/sin-copyright')"
+                            [class.text-white]="isActive('/sin-copyright')"
+                            [class.text-zinc-300]="!isActive('/sin-copyright')"
+                            class="w-full text-left px-4 py-3 hover:bg-zinc-800 transition-colors flex items-center gap-3 relative bg-gradient-to-r from-emerald-500/10 to-green-500/10 border-b border-emerald-500/20">
+                            <i class='bx bx-shield-alt-2 text-xl text-emerald-400'></i>
+                            <span class="font-semibold">Sin Copyright</span>
+                            <span
+                                class="ml-auto text-xs px-2 py-0.5 bg-emerald-500 text-black font-bold rounded-full">NUEVO</span>
+                        </button>
+
+                        <button (click)="navigateTo('/blog'); closeMoreMenu()"
+                            [class.text-emerald-400]="isActive('/blog')" [class.text-zinc-400]="!isActive('/blog')"
+                            class="w-full text-left px-4 py-3 hover:bg-zinc-800 transition-colors flex items-center gap-3">
+                            <i class='bx bx-news text-xl'></i> Blog
+                        </button>
+
+                        <button (click)="navigateTo('/radio'); closeMoreMenu()"
+                            [class.text-emerald-400]="isActive('/radio')" [class.text-zinc-400]="!isActive('/radio')"
+                            class="w-full text-left px-4 py-3 hover:bg-zinc-800 transition-colors flex items-center gap-3">
+                            <i class='bx bx-radio text-xl'></i> Radio
+                        </button>
+
+                        <button (click)="navigateTo('/playlists'); closeMoreMenu()"
+                            [class.text-emerald-400]="isActive('/playlists')"
+                            [class.text-zinc-400]="!isActive('/playlists')"
+                            class="w-full text-left px-4 py-3 hover:bg-zinc-800 transition-colors flex items-center gap-3">
+                            <i class='bx bx-list-ul text-xl'></i> Playlists
+                        </button>
+
+                        <button (click)="navigateTo('/saved-lyrics'); closeMoreMenu()"
+                            [class.text-emerald-400]="isActive('/saved-lyrics')"
+                            [class.text-zinc-400]="!isActive('/saved-lyrics')"
+                            class="w-full text-left px-4 py-3 hover:bg-zinc-800 transition-colors flex items-center gap-3">
+                            <i class='bx bx-bookmark text-xl'></i> Letras
+                        </button>
+                    </div>
+                </div>
             </nav>
         </div>
     </header>
 
     <!-- Main Content Area -->
+    <!-- Main Content Area -->
     <router-outlet></router-outlet>
+
+    <!-- Footer -->
+    <app-footer></app-footer>
 
     <!-- Mini Player (Visible when not in player view and music is active) -->
     <div *ngIf="!isActive('/player') && currentSong"
-        class="fixed bottom-[4.5rem] md:bottom-0 left-0 right-0 bg-zinc-900/95 backdrop-blur-md border-t border-zinc-800 p-3 z-40 flex items-center justify-between shadow-2xl">
+        class="fixed bottom-[4.5rem] md:bottom-0 left-0 right-0 bg-zinc-900/95 backdrop-blur-md border-t border-zinc-800 p-2 md:p-3 z-40 flex items-center gap-2 md:gap-3 shadow-2xl">
 
-        <div (click)="openPlayer()" class="flex items-center gap-3 flex-1 min-w-0 cursor-pointer group">
+        <!-- Song Info - NO CLICK ACTION -->
+        <div class="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
             <div class="relative w-12 h-12 rounded overflow-hidden bg-zinc-800 flex-shrink-0">
-                <img [src]="currentSong.img" alt="Cover"
-                    class="w-full h-full object-cover group-hover:scale-110 transition-transform">
+                <img [src]="currentSong.img" alt="Cover" class="w-full h-full object-cover">
             </div>
             <div class="min-w-0">
                 <p class="text-sm font-bold truncate transition-colors"
@@ -69,29 +112,28 @@
             </div>
         </div>
 
-        <div class="flex items-center gap-2 md:gap-4 mr-2">
+        <!-- Controls -->
+        <div class="flex items-center gap-1 md:gap-2 flex-shrink-0">
             <button (click)="previousTrack()"
-                class="hidden md:block p-2 rounded-full hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white">
+                class="hidden md:block p-2 rounded-full hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white relative z-10 cursor-pointer">
                 <i class='bx bx-skip-previous text-2xl'></i>
             </button>
 
             <button (click)="togglePlayPause()"
-                class="p-2 rounded-full hover:bg-zinc-800 transition-colors transform hover:scale-110"
+                class="p-2 rounded-full hover:bg-zinc-800 transition-colors relative z-10 cursor-pointer"
                 [ngClass]="isFavoritesPlaying ? 'text-red-400' : 'text-emerald-400'">
-                <i class='bx text-3xl' [class]="isPlaying ? 'bx-pause-circle' : 'bx-play-circle'"></i>
+                <i class='bx text-2xl md:text-3xl' [class]="isPlaying ? 'bx-pause-circle' : 'bx-play-circle'"></i>
             </button>
 
             <button (click)="nextTrack()"
-                class="p-2 rounded-full hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white">
-                <i class='bx bx-skip-next text-2xl'></i>
+                class="p-2 rounded-full hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white relative z-10 cursor-pointer">
+                <i class='bx bx-skip-next text-xl md:text-2xl'></i>
             </button>
 
-            <div class="w-px h-8 bg-zinc-800 mx-1"></div>
-
             <button (click)="closePlayer()"
-                class="p-2 rounded-full hover:bg-zinc-800 transition-colors text-zinc-500 hover:text-red-400"
-                title="Cerrar reproductor">
-                <i class='bx bx-x text-2xl'></i>
+                class="p-2 rounded-full hover:bg-zinc-800 transition-colors text-zinc-500 hover:text-red-400 relative z-10 cursor-pointer"
+                title="Cerrar">
+                <i class='bx bx-x text-xl md:text-2xl'></i>
             </button>
         </div>
     </div>
@@ -120,11 +162,99 @@
             <i class='bx bxl-youtube text-2xl'></i>
             <span class="text-[10px]">Videos</span>
         </button>
-        <button (click)="navigateTo('/playlists')" class="flex flex-col items-center gap-1 w-16"
-            [class.text-emerald-400]="isActive('/playlists')" [class.text-zinc-400]="!isActive('/playlists')">
-            <i class='bx bx-list-ul text-2xl'></i>
-            <span class="text-[10px]">Playlists</span>
+        <button (click)="toggleMobileMoreMenu()" class="flex flex-col items-center gap-1 w-16 relative"
+            [class.text-emerald-400]="showMobileMoreMenu || isActive('/sin-copyright') || isActive('/radio') || isActive('/blog') || isActive('/playlists') || isActive('/saved-lyrics')"
+            [class.text-zinc-400]="!showMobileMoreMenu && !isActive('/sin-copyright') && !isActive('/radio') && !isActive('/blog') && !isActive('/playlists') && !isActive('/saved-lyrics')">
+            <i class='bx bx-dots-horizontal-rounded text-2xl'></i>
+            <span class="text-[10px]">Más</span>
         </button>
     </nav>
+
+    <!-- Mobile More Menu Bottom Sheet -->
+    <div *ngIf="showMobileMoreMenu" class="md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] animate-fade-in"
+        (click)="closeMobileMoreMenu()">
+        <div class="absolute bottom-0 left-0 right-0 bg-zinc-900 rounded-t-3xl border-t border-zinc-800 shadow-2xl animate-slide-up"
+            (click)="$event.stopPropagation()">
+
+            <!-- Handle Bar -->
+            <div class="flex justify-center pt-3 pb-2">
+                <div class="w-12 h-1 bg-zinc-700 rounded-full"></div>
+            </div>
+
+            <!-- Menu Title -->
+            <div class="px-6 py-3 border-b border-zinc-800">
+                <h3 class="text-lg font-bold text-white">Más opciones</h3>
+            </div>
+
+            <!-- Menu Items -->
+            <div class="p-4 space-y-2 max-h-[60vh] overflow-y-auto">
+                <!-- Sin Copyright - Destacado -->
+                <button (click)="navigateTo('/sin-copyright'); closeMobileMoreMenu()"
+                    class="w-full text-left px-4 py-4 rounded-xl transition-all flex items-center gap-4 bg-gradient-to-r from-emerald-500/10 to-green-500/10 border border-emerald-500/20 active:scale-95">
+                    <div
+                        class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                        <i class='bx bx-shield-alt-2 text-2xl text-emerald-400'></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-semibold text-white">Sin Copyright</p>
+                        <p class="text-xs text-zinc-400">Música libre de derechos</p>
+                    </div>
+                    <span class="text-xs px-2 py-1 bg-emerald-500 text-black font-bold rounded-full">NUEVO</span>
+                </button>
+
+                <button (click)="navigateTo('/radio'); closeMobileMoreMenu()"
+                    class="w-full text-left px-4 py-4 rounded-xl hover:bg-zinc-800 transition-all flex items-center gap-4 active:scale-95">
+                    <div class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
+                        <i class='bx bx-radio text-2xl text-zinc-400'></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium text-white">Radio</p>
+                        <p class="text-xs text-zinc-400">Emisoras en vivo</p>
+                    </div>
+                </button>
+
+                <button (click)="navigateTo('/blog'); closeMobileMoreMenu()"
+                    class="w-full text-left px-4 py-4 rounded-xl hover:bg-zinc-800 transition-all flex items-center gap-4 active:scale-95">
+                    <div class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
+                        <i class='bx bx-news text-2xl text-zinc-400'></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium text-white">Blog</p>
+                        <p class="text-xs text-zinc-400">Noticias musicales</p>
+                    </div>
+                </button>
+
+                <button (click)="navigateTo('/playlists'); closeMobileMoreMenu()"
+                    class="w-full text-left px-4 py-4 rounded-xl hover:bg-zinc-800 transition-all flex items-center gap-4 active:scale-95">
+                    <div class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
+                        <i class='bx bx-list-ul text-2xl text-zinc-400'></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium text-white">Playlists</p>
+                        <p class="text-xs text-zinc-400">Listas de reproducción</p>
+                    </div>
+                </button>
+
+                <button (click)="navigateTo('/saved-lyrics'); closeMobileMoreMenu()"
+                    class="w-full text-left px-4 py-4 rounded-xl hover:bg-zinc-800 transition-all flex items-center gap-4 active:scale-95">
+                    <div class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
+                        <i class='bx bx-bookmark text-2xl text-zinc-400'></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium text-white">Letras Guardadas</p>
+                        <p class="text-xs text-zinc-400">Tus letras favoritas</p>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Close Button -->
+            <div class="p-4 border-t border-zinc-800">
+                <button (click)="closeMobileMoreMenu()"
+                    class="w-full py-3 bg-zinc-800 hover:bg-zinc-700 text-white font-medium rounded-xl transition-colors active:scale-95">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
 
 </div>

@@ -5,10 +5,12 @@ import { PlayerService } from '../../services/player.service';
 import { Song } from '../../services/playlist.service';
 import { filter } from 'rxjs/operators';
 
+import { FooterComponent } from '../shared/footer/footer.component';
+
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FooterComponent],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'
 })
@@ -16,7 +18,25 @@ export class LayoutComponent implements OnInit {
   currentSong: Song | null = null;
   isPlaying = false;
   isFavoritesPlaying = false;
+  showMoreMenu = false;
+  showMobileMoreMenu = false;
   private previousRoute: string = '/';
+
+  toggleMoreMenu() {
+    this.showMoreMenu = !this.showMoreMenu;
+  }
+
+  closeMoreMenu() {
+    this.showMoreMenu = false;
+  }
+
+  toggleMobileMoreMenu() {
+    this.showMobileMoreMenu = !this.showMobileMoreMenu;
+  }
+
+  closeMobileMoreMenu() {
+    this.showMobileMoreMenu = false;
+  }
 
   constructor(
     public playerService: PlayerService,
