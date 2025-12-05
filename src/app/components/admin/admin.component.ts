@@ -374,8 +374,8 @@ export class AdminComponent implements OnInit {
       return;
     }
 
-    if (!this.imageFile) {
-      alert('Por favor selecciona una imagen de portada');
+    if (!this.imageFile && !this.imagePreview) {
+      alert('Por favor selecciona una imagen de portada o busca en iTunes');
       return;
     }
 
@@ -386,15 +386,21 @@ export class AdminComponent implements OnInit {
         message: 'Iniciando carga...'
       });
 
-      // 1. Subir imagen primero (una sola vez para todas)
-      this.uploadProgress.set({
-        uploading: true,
-        progress: 5,
-        message: 'Subiendo imagen de portada...'
-      });
+      // 1. Obtener URL de imagen (Subir archivo o usar iTunes)
+      let imageUrl = '';
 
-      const imagePath = `covers/${this.songData.artistName}/${Date.now()}_${this.imageFile.name}`;
-      const imageUrl = await this.dbService.uploadFile(imagePath, this.imageFile);
+      if (this.imageFile) {
+        this.uploadProgress.set({
+          uploading: true,
+          progress: 5,
+          message: 'Subiendo imagen de portada...'
+        });
+
+        const imagePath = `covers/${this.songData.artistName}/${Date.now()}_${this.imageFile.name}`;
+        imageUrl = await this.dbService.uploadFile(imagePath, this.imageFile);
+      } else if (this.imagePreview) {
+        imageUrl = this.imagePreview;
+      }
 
       // 2. Iterar sobre cada canción
       const totalFiles = this.audioFiles.length;
@@ -522,6 +528,7 @@ export class AdminComponent implements OnInit {
 
   selectItunesItem(item: any): void {
     this.selectedItunesItem.set(item);
+    this.imageFile = null; // Clear manual file if iTunes item is selected
 
     if (this.itunesSearchType === 'artist') {
       // Pre-fill artist name with iTunes data

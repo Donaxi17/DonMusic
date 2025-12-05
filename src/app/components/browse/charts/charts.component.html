@@ -101,8 +101,8 @@
                     </div>
 
                     <!-- Ad Banner after 10th item (index 9) -->
-                    <div *ngIf="i === 9" class="py-4">
-                        <app-ad-banner adType="Banner Horizontal"></app-ad-banner>
+                    <div *ngIf="i === 9" class="">
+                        <!-- <app-ad-banner adType="Banner Horizontal"></app-ad-banner> -->
                     </div>
                 </ng-container>
             </div>
@@ -112,7 +112,7 @@
         <div class="w-full lg:w-80 xl:w-96 flex-shrink-0">
             <div class="sticky top-24">
                 <!-- Ad Banner -->
-                <app-ad-banner adType="Anuncio Lateral" class="hidden md:block mb-6"></app-ad-banner>
+                <!-- <app-ad-banner adType="Anuncio Lateral" class="hidden md:block mb-6"></app-ad-banner> -->
 
                 <!-- Featured Song Card -->
                 <div *ngIf="chartSongs().length > 0"
