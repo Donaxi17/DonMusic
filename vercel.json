@@ -9,18 +9,18 @@
             "src": "package.json",
             "use": "@vercel/static-build",
             "config": {
-                "distDir": "dist/don-music"
+                "distDir": "dist/don-music/browser"
             }
         }
     ],
-    "routes": [
+    "rewrites": [
         {
-            "src": "/api/convert",
-            "dest": "/api/index.py"
+            "source": "/api/convert",
+            "destination": "/api/index.py"
         },
         {
-            "src": "/(.*)",
-            "dest": "/index.html"
+            "source": "/(.*)",
+            "destination": "/index.html"
         }
     ]
 }
