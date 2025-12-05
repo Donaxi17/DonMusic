@@ -56,6 +56,14 @@
                                 class="ml-auto text-xs px-2 py-0.5 bg-emerald-500 text-black font-bold rounded-full">NUEVO</span>
                         </button>
 
+
+                        <button (click)="navigateTo('/converter'); closeMoreMenu()"
+                            [class.text-emerald-400]="isActive('/converter')"
+                            [class.text-zinc-400]="!isActive('/converter')"
+                            class="w-full text-left px-4 py-3 hover:bg-zinc-800 transition-colors flex items-center gap-3">
+                            <i class='bx bx-cloud-download text-xl'></i> Convertidor MP3
+                        </button>
+
                         <button (click)="navigateTo('/blog'); closeMoreMenu()"
                             [class.text-emerald-400]="isActive('/blog')" [class.text-zinc-400]="!isActive('/blog')"
                             class="w-full text-left px-4 py-3 hover:bg-zinc-800 transition-colors flex items-center gap-3">
@@ -210,6 +218,17 @@
                     <div class="flex-1">
                         <p class="font-medium text-white">Radio</p>
                         <p class="text-xs text-zinc-400">Emisoras en vivo</p>
+                    </div>
+                </button>
+
+                <button (click)="navigateTo('/converter'); closeMobileMoreMenu()"
+                    class="w-full text-left px-4 py-4 rounded-xl hover:bg-zinc-800 transition-all flex items-center gap-4 active:scale-95">
+                    <div class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center flex-shrink-0">
+                        <i class='bx bx-cloud-download text-2xl text-zinc-400'></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium text-white">Convertidor MP3</p>
+                        <p class="text-xs text-zinc-400">Descarga de YouTube</p>
                     </div>
                 </button>
 

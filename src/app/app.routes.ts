@@ -42,7 +42,8 @@ export const routes: Routes = [
                 path: 'admin',
                 loadComponent: () => import('./components/admin/admin.component').then(m => m.AdminComponent),
                 canActivate: [adminGuard]
-            }
+            },
+            { path: 'converter', loadComponent: () => import('./components/converter/converter.component').then(m => m.ConverterComponent) }
         ]
     },
     { path: 'download', component: DownloadPageComponent },

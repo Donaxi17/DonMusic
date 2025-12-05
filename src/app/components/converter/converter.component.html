@@ -1,0 +1,134 @@
+<div
+    class="min-h-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-black py-8 px-4 relative overflow-hidden flex items-center justify-center">
+
+    <!-- Efectos de Fondo (Optimizados para móvil reduciendo blur excesivo) -->
+    <div
+        class="absolute top-0 left-0 w-64 h-64 bg-red-600/10 rounded-full blur-[80px] animate-pulse-slow pointer-events-none">
+    </div>
+    <div class="absolute bottom-0 right-0 w-64 h-64 bg-green-600/10 rounded-full blur-[80px] animate-pulse-slow pointer-events-none"
+        style="animation-delay: 2s;"></div>
+
+    <div class="w-full max-w-2xl relative z-10">
+        <!-- Header Compacto y Responsive -->
+        <div class="text-center mb-6 md:mb-8 animate-fade-in">
+            <div
+                class="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-red-600 to-red-800 rounded-2xl mb-4 shadow-xl shadow-red-600/20 transform transition-transform hover:scale-110 duration-500">
+                <i class='bx bxl-youtube text-3xl md:text-4xl text-white'></i>
+            </div>
+            <h1
+                class="text-3xl md:text-5xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-400">
+                MP3 Download
+            </h1>
+            <p class="text-gray-400 text-sm md:text-lg max-w-md mx-auto leading-relaxed">
+                Pega tu enlace y obtén música en segundos.
+            </p>
+        </div>
+
+        <!-- Tarjeta Principal (Glassmorphism Pulido) -->
+        <div
+            class="bg-zinc-900/80 backdrop-blur-xl border border-white/10 rounded-3xl p-5 md:p-8 shadow-2xl mb-6 ring-1 ring-white/5">
+
+            <!-- Input con mejor UX móvil (tamaño texto 16px para evitar zoom automático en iOS) -->
+            <div class="mb-5 md:mb-6">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 block ml-1">
+                    🔗 Enlace del Video
+                </label>
+                <div class="relative group">
+                    <input type="text" [(ngModel)]="youtubeUrl" (ngModelChange)="onUrlChange()"
+                        (keyup.enter)="convert()" [disabled]="isLoading" placeholder="https://youtu.be/..."
+                        class="w-full bg-black/50 border border-white/10 rounded-2xl px-5 py-4 text-base md:text-lg text-white placeholder-gray-600 focus:border-red-500/50 focus:ring-2 focus:ring-red-500/20 outline-none transition-all duration-300 shadow-inner">
+
+                    <!-- Botón borrar (X) -->
+                    <button *ngIf="youtubeUrl && !isLoading" (click)="clearForm()"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors">
+                        <i class='bx bx-x text-xl'></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Botón Convertir (Grande y Táctil) -->
+            <button *ngIf="!showResult" (click)="convert()" [disabled]="isLoading || !youtubeUrl"
+                class="w-full relative overflow-hidden bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-bold py-4 rounded-2xl transition-all duration-300 transform active:scale-[0.98] shadow-lg shadow-red-600/20 disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation">
+                <span *ngIf="!isLoading" class="flex items-center justify-center gap-2 text-lg">
+                    <i class='bx bx-cloud-download text-2xl'></i>
+                    Convertir Ahora
+                </span>
+                <!-- Loading State -->
+                <div *ngIf="isLoading" class="flex items-center justify-center gap-3">
+                    <div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    <span class="animate-pulse">Procesando...</span>
+                </div>
+            </button>
+
+            <!-- Error -->
+            <div *ngIf="error"
+                class="mt-4 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-300 text-center text-sm flex items-center justify-center gap-2 animate-shake">
+                <i class='bx bx-error-circle text-xl'></i>
+                {{ error }}
+            </div>
+
+            <!-- RESULTADO FINAL (Tarjeta Premium) -->
+            <div *ngIf="showResult"
+                class="mt-6 bg-black/40 border border-white/5 rounded-2xl p-5 md:p-6 animate-fade-in-up">
+
+                <div class="flex flex-col md:flex-row gap-5 items-center">
+                    <!-- Thumbnail -->
+                    <div
+                        class="w-full md:w-40 aspect-video rounded-xl overflow-hidden shadow-lg border border-white/10 relative group">
+                        <img [src]="videoThumb"
+                            class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div
+                            class="absolute bottom-2 right-2 bg-black/80 px-2 py-0.5 rounded text-[10px] text-white font-mono">
+                            HD</div>
+                    </div>
+
+                    <!-- Info y Botón -->
+                    <div class="flex-1 text-center md:text-left w-full">
+                        <h3 class="text-white font-bold text-lg leading-tight mb-1 line-clamp-2 md:line-clamp-1">{{
+                            videoTitle }}</h3>
+                        <p
+                            class="text-green-400 text-xs font-medium mb-4 flex items-center justify-center md:justify-start gap-1">
+                            <i class='bx bxs-check-circle'></i> Listo para descargar ({{ audioFormat }})
+                        </p>
+
+                        <a [href]="downloadLink" (click)="downloadFile(); $event.preventDefault()"
+                            class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-green-600/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 cursor-pointer touch-manipulation decoration-0 no-underline">
+                            <i class='bx bxs-download text-xl animate-bounce-slow'></i>
+                            DESCARGAR {{ audioFormat }}
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-4 border-t border-white/5 text-center">
+                    <button (click)="clearForm()"
+                        class="text-gray-500 text-sm hover:text-white transition-colors flex items-center justify-center gap-1 mx-auto py-2">
+                        <i class='bx bx-refresh'></i> Convertir otro video
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features (Grid limpio) -->
+        <div class="grid grid-cols-3 gap-3 md:gap-4 opacity-70 hover:opacity-100 transition-opacity duration-500">
+            <div class="bg-zinc-900/30 backdrop-blur rounded-xl p-3 text-center border border-white/5">
+                <i class='bx bx-check-shield text-xl md:text-2xl text-green-500 mb-1'></i>
+                <p class="text-[10px] md:text-xs text-gray-300 uppercase tracking-wide">Seguro</p>
+            </div>
+            <div class="bg-zinc-900/30 backdrop-blur rounded-xl p-3 text-center border border-white/5">
+                <i class='bx bx-run text-xl md:text-2xl text-blue-500 mb-1'></i>
+                <p class="text-[10px] md:text-xs text-gray-300 uppercase tracking-wide">Rápido</p>
+            </div>
+            <div class="bg-zinc-900/30 backdrop-blur rounded-xl p-3 text-center border border-white/5">
+                <i class='bx bx-infinite text-xl md:text-2xl text-purple-500 mb-1'></i>
+                <p class="text-[10px] md:text-xs text-gray-300 uppercase tracking-wide">Gratis</p>
+            </div>
+        </div>
+
+        <!-- SEO Footer Text (Invisible visualmente pero ayuda al bot) -->
+        <div class="sr-only">
+            DonMusica Converter es la mejor herramienta online para convertir videos de YouTube a MP3 de alta calidad.
+            Compatible con todos los dispositivos, iPhone, Android. Sin programas.
+        </div>
+    </div>
+</div>
