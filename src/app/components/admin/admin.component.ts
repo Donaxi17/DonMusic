@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DatabaseService, Song, Artist } from '../../services/database.service';
+import { MusicApiService } from '../../services/music-api.service';
 
 interface UploadProgress {
   uploading: boolean;
@@ -28,6 +29,7 @@ interface Album {
 export class AdminComponent implements OnInit {
   private dbService = inject(DatabaseService);
   private router = inject(Router);
+  private musicApi = inject(MusicApiService);
 
   // Lists from Firebase
   artists = signal<Artist[]>([]);
@@ -73,6 +75,13 @@ export class AdminComponent implements OnInit {
   // Preview URLs
   audioPreview: string | null = null;
   imagePreview: string | null = null;
+
+  // iTunes Search
+  itunesSearchQuery = '';
+  itunesSearchType: 'artist' | 'song' = 'artist';
+  itunesSearchResults = signal<any[]>([]);
+  itunesSearching = signal(false);
+  selectedItunesItem = signal<any>(null);
 
   ngOnInit() {
     this.loadArtists();
@@ -472,5 +481,78 @@ export class AdminComponent implements OnInit {
 
     // Redirigir al login
     this.router.navigate(['/admin-login']);
+  }
+
+  // ===== ITUNES SEARCH METHODS =====
+
+  searchITunes(): void {
+    if (!this.itunesSearchQuery || this.itunesSearchQuery.trim().length < 2) {
+      return;
+    }
+
+    this.itunesSearching.set(true);
+    this.itunesSearchResults.set([]);
+
+    if (this.itunesSearchType === 'artist') {
+      this.musicApi.searchArtistInITunes(this.itunesSearchQuery).subscribe({
+        next: (results) => {
+          this.itunesSearchResults.set(results);
+          this.itunesSearching.set(false);
+        },
+        error: (error) => {
+          console.error('Error searching iTunes:', error);
+          this.itunesSearching.set(false);
+          alert('Error buscando en iTunes. Intenta de nuevo.');
+        }
+      });
+    } else {
+      this.musicApi.searchTrack(this.itunesSearchQuery).subscribe({
+        next: (results) => {
+          this.itunesSearchResults.set(results);
+          this.itunesSearching.set(false);
+        },
+        error: (error) => {
+          console.error('Error searching iTunes:', error);
+          this.itunesSearching.set(false);
+          alert('Error buscando en iTunes. Intenta de nuevo.');
+        }
+      });
+    }
+  }
+
+  selectItunesItem(item: any): void {
+    this.selectedItunesItem.set(item);
+
+    if (this.itunesSearchType === 'artist') {
+      // Pre-fill artist name with iTunes data
+      this.newArtistName = item.artistName;
+      // Set image preview from iTunes
+      this.imagePreview = item.artworkUrl600 || item.artworkUrl100;
+      console.log('Artist image URL:', this.imagePreview);
+    } else {
+      // Pre-fill song data
+      this.songData.title = item.title;
+      this.songData.artistName = item.artist;
+      this.songData.albumName = item.album;
+      this.songData.duration = item.duration;
+      // Set image preview from iTunes
+      this.imagePreview = item.img;
+      console.log('Song image URL:', this.imagePreview);
+    }
+  }
+
+  clearItunesSearch(): void {
+    this.itunesSearchQuery = '';
+    this.itunesSearchResults.set([]);
+    this.selectedItunesItem.set(null);
+  }
+
+  useItunesImageForArtist(): string {
+    const selected = this.selectedItunesItem();
+    if (selected && selected.artworkUrl600) {
+      // Instead of uploading, we'll save this URL directly to Firestore
+      return selected.artworkUrl600;
+    }
+    return '';
   }
 }

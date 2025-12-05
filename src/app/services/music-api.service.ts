@@ -429,4 +429,116 @@ export class MusicApiService {
     getStreamUrl(videoId: string): Observable<string | null> {
         return of(null);
     }
+
+    /**
+     * Busca artistas en iTunes API
+     * Devuelve canciones agrupadas por artista con imágenes
+     */
+    searchArtistInITunes(artistName: string): Observable<Array<{
+        artistId: number;
+        artistName: string;
+        primaryGenreName: string;
+        artworkUrl100: string;
+        artworkUrl600?: string;
+        trackCount?: number;
+    }>> {
+        if (!artistName || artistName.trim().length < 2) {
+            return of([]);
+        }
+
+        // Buscar canciones del artista para obtener imágenes
+        const url = `https://itunes.apple.com/search?term=${encodeURIComponent(artistName)}&media=music&entity=song&limit=50`;
+
+        return this.http.get<any>(url).pipe(
+            map(res => {
+                if (!res.results || res.results.length === 0) {
+                    return [];
+                }
+
+                // Agrupar por artista único
+                const artistsMap = new Map<string, any>();
+
+                res.results.forEach((track: any) => {
+                    const artistKey = track.artistName.toLowerCase();
+
+                    if (!artistsMap.has(artistKey)) {
+                        artistsMap.set(artistKey, {
+                            artistId: track.artistId,
+                            artistName: track.artistName,
+                            primaryGenreName: track.primaryGenreName || 'Music',
+                            artworkUrl100: track.artworkUrl100 || '',
+                            artworkUrl600: track.artworkUrl100?.replace('100x100bb', '600x600bb') || '',
+                            trackCount: 1
+                        });
+                    } else {
+                        artistsMap.get(artistKey)!.trackCount++;
+                    }
+                });
+
+                // Convertir a array y ordenar
+                return Array.from(artistsMap.values())
+                    .sort((a, b) => {
+                        const searchLower = artistName.toLowerCase();
+                        const aExact = a.artistName.toLowerCase() === searchLower;
+                        const bExact = b.artistName.toLowerCase() === searchLower;
+
+                        if (aExact && !bExact) return -1;
+                        if (!aExact && bExact) return 1;
+
+                        return (b.trackCount || 0) - (a.trackCount || 0);
+                    })
+                    .slice(0, 10);
+            }),
+            catchError(error => {
+                console.error('Error searching artist:', error);
+                return of([]);
+            })
+        );
+    }
+
+    /**
+     * Busca canciones en iTunes
+     */
+    searchTrack(trackName: string, artistName?: string): Observable<Song[]> {
+        const searchTerm = artistName
+            ? `${trackName} ${artistName}`
+            : trackName;
+
+        const url = `https://itunes.apple.com/search?term=${encodeURIComponent(searchTerm)}&media=music&entity=song&limit=10`;
+
+        return this.http.get<any>(url).pipe(
+            map(res => {
+                if (!res.results || res.results.length === 0) {
+                    return [];
+                }
+
+                return res.results.map((track: any) => this.convertITunesToSong(track));
+            }),
+            catchError(error => {
+                console.error('Error searching track:', error);
+                return of([]);
+            })
+        );
+    }
+
+    /**
+     * Busca canciones de un artista
+     */
+    searchTracksByArtist(artistName: string, limit: number = 20): Observable<Song[]> {
+        const url = `https://itunes.apple.com/search?term=${encodeURIComponent(artistName)}&media=music&entity=song&limit=${limit}`;
+
+        return this.http.get<any>(url).pipe(
+            map(res => {
+                if (!res.results || res.results.length === 0) {
+                    return [];
+                }
+
+                return res.results.map((track: any) => this.convertITunesToSong(track));
+            }),
+            catchError(error => {
+                console.error('Error searching tracks:', error);
+                return of([]);
+            })
+        );
+    }
 }
