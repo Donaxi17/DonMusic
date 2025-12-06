@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { SeoService } from '../../services/seo.service';
 import { MusicApiService } from '../../services/music-api.service';
 import { Song } from '../../services/playlist.service';
@@ -9,7 +9,7 @@ import { Song } from '../../services/playlist.service';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -48,6 +48,13 @@ export class HomeComponent implements OnInit {
 
   navigateTo(path: string): void {
     this.router.navigate([path]);
+  }
+
+  scrollToRequest(): void {
+    const element = document.getElementById('requestForm');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   submitRequest(): void {

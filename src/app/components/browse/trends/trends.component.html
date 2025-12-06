@@ -1,144 +1,103 @@
-<div class="space-y-3 md:space-y-8 animate-fade-in pb-20 md:pb-28" appInfiniteScroll (scrolled)="loadMore()">
+<div class="space-y-4 md:space-y-8 animate-fade-in pb-4 md:pb-20" appInfiniteScroll (scrolled)="loadMore()">
     <!-- SEO-optimized header with semantic HTML -->
-    <header class="mb-3 md:mb-8">
+    <header class="mb-4 md:mb-8 px-1">
         <h1
-            class="text-xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
-            Tendencias Musicales Globales
+            class="text-2xl md:text-3xl lg:text-4xl font-black bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+            Tendencias Globales
         </h1>
-        <p class="text-zinc-400 mt-1 md:mt-2 text-xs md:text-base">
-            Descubre lo más escuchado del momento. Música sin límites. 🎵
+        <p class="text-zinc-400 text-xs md:text-base mt-1">
+            Lo más escuchado del momento. 🎵
         </p>
     </header>
 
-    <!-- Region Filters - Compact on mobile -->
-    <div class="flex gap-2 mb-3 md:mb-6">
+    <!-- Region Filters - Compact Pills -->
+    <div class="flex gap-2 mb-4 md:mb-6 overflow-x-auto pb-2 no-scrollbar px-1">
         <button *ngFor="let region of regions" (click)="changeRegion(region.code)"
-            [class.active]="selectedRegion() === region.code"
-            class="px-3 py-1.5 md:px-6 md:py-2.5 rounded-lg md:rounded-xl font-medium text-xs md:text-base transition-all duration-300 flex items-center gap-1.5 md:gap-2"
+            class="flex items-center gap-2 px-4 py-2 rounded-full font-bold text-xs md:text-sm transition-all duration-300 border backdrop-blur-md active:scale-95 whitespace-nowrap"
             [ngClass]="{
-                    'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30': selectedRegion() === region.code,
-                    'bg-zinc-800/50 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-300': selectedRegion() !== region.code
-                }">
-            <span class="text-base md:text-xl">{{region.flag}}</span>
+                'bg-emerald-500 border-emerald-500 text-black shadow-lg shadow-emerald-500/20': selectedRegion() === region.code,
+                'bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-600 hover:text-white': selectedRegion() !== region.code
+            }">
+            <span class="text-lg">{{region.flag}}</span>
             <span>{{region.name}}</span>
         </button>
     </div>
 
     <!-- Loading state -->
-    <div *ngIf="loading()" class="flex justify-center py-8 md:py-12" role="status" aria-label="Cargando tendencias">
-        <div class="animate-spin rounded-full h-8 w-8 md:h-12 md:w-12 border-t-2 border-b-2 border-emerald-500">
-        </div>
+    <div *ngIf="loading()" class="flex flex-col items-center justify-center py-20 animate-fade-in">
+        <div class="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p class="text-emerald-500 text-sm font-bold animate-pulse">Cargando charts...</p>
     </div>
 
-    <!-- Top 1-5 Songs (Visual only - no click action) -->
-    <section aria-label="Top 5 canciones" *ngIf="!loading()">
-        <div class="grid gap-1.5 md:gap-4">
-            <article *ngFor="let song of trendingSongs().slice(0, 5); let i = index" (click)="onSongClick(song, $event)"
-                class="flex items-center gap-2 md:gap-4 p-2 md:p-4 rounded-lg md:rounded-xl bg-zinc-900/50 hover:bg-zinc-800/70 transition-all duration-300 group border border-transparent hover:border-emerald-500/20"
-                [attr.aria-label]="'Posición ' + (i + 1) + ': ' + song.title + ' por ' + song.artist">
+    <!-- Content State -->
+    <div *ngIf="!loading()">
 
-                <!-- Rank number -->
-                <span
-                    class="text-lg md:text-2xl lg:text-3xl font-bold text-zinc-700 w-6 md:w-10 text-center group-hover:text-emerald-500 transition-colors flex-shrink-0"
-                    aria-hidden="true">
+        <!-- EMPTY STATE (No songs) -->
+        <div *ngIf="trendingSongs().length === 0"
+            class="flex flex-col items-center justify-center py-20 text-center animate-fade-in px-4">
+            <div
+                class="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mb-4 text-zinc-700 border border-zinc-800">
+                <i class='bx bx-bar-chart-alt-2 text-4xl'></i>
+            </div>
+            <h3 class="text-white font-bold text-lg mb-2">No hay tendencias disponibles</h3>
+            <p class="text-zinc-500 text-sm max-w-xs mx-auto">
+                No pudimos cargar los datos para esta región. Intenta con otra.
+            </p>
+        </div>
+
+        <!-- LIST OF SONGS -->
+        <div *ngIf="trendingSongs().length > 0" class="flex flex-col gap-3 min-h-[50vh]">
+
+            <!-- Items -->
+            <article *ngFor="let song of trendingSongs(); let i = index" (click)="onSongClick(song, $event)"
+                class="group flex items-center gap-3 p-3 rounded-xl bg-zinc-900/40 hover:bg-zinc-800 border border-white/5 hover:border-emerald-500/30 transition-all cursor-pointer active:scale-[0.99]">
+
+                <!-- Rank -->
+                <span class="text-lg font-black w-8 text-center" [ngClass]="{
+                        'text-emerald-400': i < 3,
+                        'text-zinc-600': i >= 3
+                    }">
                     {{i + 1}}
                 </span>
 
-                <!-- Album cover with error handling -->
+                <!-- Image -->
                 <div
-                    class="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 bg-zinc-800 rounded-md md:rounded-lg flex-shrink-0 shadow-lg overflow-hidden ring-2 ring-transparent group-hover:ring-emerald-500/30 transition-all duration-300">
-                    <img [src]="song.img" [alt]="'Portada de ' + song.album + ' por ' + song.artist"
-                        (error)="onImageError($event)" loading="lazy"
-                        class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300">
+                    class="relative w-12 h-12 md:w-14 md:h-14 rounded-lg overflow-hidden flex-shrink-0 bg-zinc-800 shadow-lg">
+                    <img [src]="song.img" [alt]="song.title" (error)="onImageError($event)" loading="lazy"
+                        class="w-full h-full object-cover">
+                    <div
+                        class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <i class='bx bx-play text-white text-xl'></i>
+                    </div>
                 </div>
 
-                <!-- Song info -->
-                <div class="flex-1 min-w-0">
-                    <h2
-                        class="font-bold text-xs md:text-base lg:text-lg truncate group-hover:text-emerald-400 transition-colors">
-                        {{song.title}}
-                    </h2>
-                    <p
-                        class="text-[10px] md:text-sm lg:text-base text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
-                        {{song.artist}}
-                    </p>
-                </div>
-
-                <!-- Trending badge -->
-                <div class="text-emerald-500 text-[10px] md:text-sm font-medium px-1.5 py-0.5 md:px-3 md:py-1.5 bg-emerald-500/10 rounded-full flex items-center gap-0.5 md:gap-1 flex-shrink-0"
-                    aria-label="Tendencia">
-                    <i class='bx bx-trending-up text-sm md:text-lg' aria-hidden="true"></i>
-                    <span class="hidden md:inline">Top</span>
-                </div>
-            </article>
-        </div>
-    </section>
-
-    <!-- Ad Banner after Top 5 -->
-    <!-- <app-ad-banner adType="Banner Principal" class="my-4 md:my-8 block" aria-label="Publicidad"></app-ad-banner> -->
-
-    <!-- Remaining Songs (6+) with Infinite Scroll -->
-    <section aria-label="Más tendencias" *ngIf="trendingSongs().length > 5">
-        <div class="grid gap-1.5 md:gap-3">
-            <article *ngFor="let song of trendingSongs().slice(5); let i = index" (click)="onSongClick(song, $event)"
-                class="flex items-center gap-2 md:gap-4 p-1.5 md:p-3 rounded-lg md:rounded-xl bg-zinc-900/50 hover:bg-zinc-800/70 transition-all duration-300 group border border-transparent hover:border-zinc-700"
-                [attr.aria-label]="'Posición ' + (i + 6) + ': ' + song.title + ' por ' + song.artist">
-
-                <!-- Rank number -->
-                <span
-                    class="text-sm md:text-lg lg:text-xl font-bold text-zinc-700 w-5 md:w-8 text-center group-hover:text-emerald-500 transition-colors flex-shrink-0"
-                    aria-hidden="true">
-                    {{i + 6}}
-                </span>
-
-                <!-- Album cover with error handling -->
-                <div
-                    class="w-9 h-9 md:w-12 md:h-12 lg:w-14 lg:h-14 bg-zinc-800 rounded-md md:rounded-lg flex-shrink-0 overflow-hidden ring-2 ring-transparent group-hover:ring-emerald-500/20 transition-all duration-300">
-                    <img [src]="song.img" [alt]="'Portada de ' + song.album + ' por ' + song.artist"
-                        (error)="onImageError($event)" loading="lazy"
-                        class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300">
-                </div>
-
-                <!-- Song info -->
+                <!-- Info -->
                 <div class="flex-1 min-w-0">
                     <h3
-                        class="font-medium text-xs md:text-sm lg:text-base truncate group-hover:text-zinc-300 transition-colors">
+                        class="text-white font-bold text-sm md:text-base truncate group-hover:text-emerald-400 transition-colors">
                         {{song.title}}
                     </h3>
-                    <p
-                        class="text-[10px] md:text-sm text-zinc-500 truncate group-hover:text-zinc-400 transition-colors">
+                    <p class="text-zinc-400 text-xs truncate">
                         {{song.artist}}
                     </p>
                 </div>
 
-                <!-- Duration (desktop only) -->
-                <span
-                    class="hidden lg:block text-xs text-zinc-600 group-hover:text-zinc-400 transition-colors flex-shrink-0">
-                    {{song.duration}}
-                </span>
+                <!-- Duration / Icon -->
+                <div class="text-zinc-600 text-xs font-mono">
+                    {{song.duration || '0:00'}}
+                </div>
             </article>
-        </div>
-    </section>
 
-    <!-- Loading More Indicator -->
-    <div *ngIf="loadingMore()" class="flex justify-center py-4 md:py-8" role="status"
-        aria-label="Cargando más canciones">
-        <div class="flex items-center gap-2 md:gap-3 text-emerald-400">
-            <div class="animate-spin rounded-full h-5 w-5 md:h-6 md:w-6 border-t-2 border-b-2 border-emerald-500"></div>
-            <span class="text-xs md:text-sm font-medium">Cargando más...</span>
+            <!-- End Message -->
+            <div *ngIf="!hasMore" class="text-center py-8 opacity-50">
+                <div class="h-px w-24 bg-gradient-to-r from-transparent via-zinc-700 to-transparent mx-auto mb-4"></div>
+                <p class="text-zinc-500 text-xs">Fin de la lista</p>
+            </div>
         </div>
     </div>
 
-    <!-- End of List Message -->
-    <div *ngIf="!hasMore && !loading() && trendingSongs().length > 0" class="text-center py-4 md:py-8">
-        <p class="text-zinc-500 text-xs md:text-base">
-            Has llegado al final de las tendencias 🎵
-        </p>
-        <p class="text-zinc-600 text-[10px] md:text-xs mt-1 md:mt-2">
-            ¡Vuelve pronto para más música!
-        </p>
+    <!-- Loading More -->
+    <div *ngIf="loadingMore()" class="flex justify-center py-4">
+        <div class="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
     </div>
-
-    <!-- Bottom Ad Banner -->
-    <!-- <app-ad-banner adType="Banner Principal" class="my-4 md:my-8 block" aria-label="Publicidad"></app-ad-banner> -->
 </div>

@@ -1,320 +1,227 @@
-<div class="absolute inset-0 z-0">
-    <img src="https://picsum.photos/seed/music_concert/1920/1080" alt="Music Background"
-        class="w-full h-full object-cover opacity-60" onerror="this.style.display='none'">
-    <div class="absolute inset-0 bg-gradient-to-b from-zinc-900/20 via-zinc-950/80 to-zinc-950"></div>
-</div>
+<div class="relative min-h-screen pb-4 md:pb-24 overflow-x-hidden">
 
-<div class="relative z-10 max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-12 text-center">
-    <span
-        class="inline-block py-1 px-3 rounded-full bg-emerald-500/10 text-emerald-400 text-xs md:text-sm font-bold uppercase tracking-wider mb-4 md:mb-6 border border-emerald-500/20 animate-fade-in">
-        La Revolución Musical
-    </span>
-    <h1
-        class="text-4xl md:text-7xl lg:text-8xl font-black mb-4 md:mb-6 bg-gradient-to-r from-white via-emerald-100 to-zinc-400 bg-clip-text text-transparent leading-tight tracking-tight">
-        Siente el Ritmo<br>
-        <span class="text-emerald-500">Sin Límites</span>
-    </h1>
-    <p class="text-base md:text-2xl text-zinc-400 mb-8 md:mb-10 max-w-3xl mx-auto leading-relaxed">
-        Descubre, escucha y conecta con la música que mueve al mundo.
-        Tu biblioteca personal con la mejor calidad de sonido.
-    </p>
-    <div class="flex flex-col md:flex-row gap-3 md:gap-4 justify-center items-center">
-        <button (click)="navigateToArtists()"
-            class="w-full md:w-auto px-8 py-3 md:py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-full text-base md:text-lg transition-all transform hover:scale-105 shadow-xl shadow-emerald-500/20 flex items-center justify-center gap-2">
-            <i class='bx bx-play-circle text-2xl'></i>
-            Empezar a Escuchar
-        </button>
-        <button routerLink="/blog"
-            class="w-full md:w-auto px-8 py-3 md:py-4 bg-zinc-800 hover:bg-zinc-700 text-white font-bold rounded-full text-base md:text-lg transition-all border border-zinc-700 hover:border-zinc-600 flex items-center justify-center gap-2">
-            <i class='bx bx-news text-2xl'></i>
-            Leer Novedades
-        </button>
+    <!-- Hero Background -->
+    <div class="absolute top-0 left-0 right-0 h-[77vh] md:h-[85vh] z-0 pointer-events-none">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-zinc-950/80 to-zinc-950 z-10"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-emerald-900/20 to-black/50 z-10"></div>
+        <img src="https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=2070&auto=format&fit=crop"
+            alt="Concert Background" class="w-full h-full object-cover opacity-50 animate-fade-in">
     </div>
-</div>
 
-<div class="max-w-7xl mx-auto px-4 md:px-6">
+    <!-- Contenido Principal -->
+    <div class="relative z-10 max-w-7xl mx-auto px-5 pt-2 md:pt-24">
 
-    <!-- Development Banner -->
-    <div class="max-w-7xl mx-auto mt-4 md:mt-6 mb-10 md:mb-16">
-        <div
-            class="bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 rounded-2xl p-6 md:p-8 text-center backdrop-blur-sm">
-            <div class="inline-flex p-3 bg-amber-500/20 rounded-full text-amber-500 mb-4">
-                <i class='bx bx-code-alt text-2xl'></i>
+        <!-- HERO TEXT -->
+        <div class="text-center mb-10 md:mb-16 pt-10">
+            <div
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-4 backdrop-blur-md animate-fade-in-up">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="text-emerald-400 text-[10px] md:text-xs font-bold uppercase tracking-widest">Plataforma
+                    #1</span>
             </div>
-            <h3 class="text-white font-bold text-lg md:text-xl mb-2">Sitio en Desarrollo Activo 🚧</h3>
-            <p class="text-zinc-400 max-w-2xl mx-auto text-sm md:text-lg">
-                Estamos desarrollando un programa para patrocinar a los cantantes y su música. ¡Muy pronto estará
-                disponible!
+
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-4 leading-none tracking-tight animate-fade-in-up"
+                style="animation-delay: 100ms;">
+                Siente <br class="md:hidden" />
+                <span class="bg-gradient-to-r from-emerald-400 to-green-600 bg-clip-text text-transparent">El
+                    Ritmo.</span>
+            </h1>
+
+            <p class="text-zinc-300 text-base md:text-xl max-w-lg mx-auto mb-6 leading-relaxed animate-fade-in-up px-4"
+                style="animation-delay: 200ms;">
+                Tu portal definitivo de música urbana. Escucha, descarga y comparte sin límites.
             </p>
-        </div>
-    </div>
 
-    <!-- Trending Section (Grid Layout - Visual Only) -->
-    <section class="mb-12 md:mb-20">
-        <div class="flex items-center justify-between mb-6 md:mb-8">
-            <h2 class="text-xl md:text-3xl font-bold text-white">Tendencias Globales</h2>
-            <span class="text-emerald-400 text-xs md:text-sm font-bold cursor-pointer hover:underline"
-                routerLink="/browse/trends">Ver Top 10</span>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
-            <!-- Real Trending Items -->
-            <div class="group relative aspect-square rounded-xl overflow-hidden cursor-pointer bg-zinc-900"
-                *ngFor="let song of trendingSongs">
-                <img [src]="song.img" [alt]="song.title"
-                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-80 group-hover:opacity-100">
-                <div class="absolute bottom-0 left-0 right-0 p-2 md:p-3 bg-gradient-to-t from-black/90 to-transparent">
-                    <p class="text-white text-xs md:text-sm font-bold truncate">{{song.title}}</p>
-                    <p class="text-zinc-400 text-[10px] md:text-xs truncate">{{song.artist}}</p>
-                </div>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center items-center animate-fade-in-up px-4"
+                style="animation-delay: 300ms;">
+                <button (click)="navigateToArtists()"
+                    class="w-full sm:w-auto h-12 md:h-14 px-8 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-full text-base md:text-lg transition-all transform active:scale-95 hover:shadow-[0_0_20px_-5px_rgba(16,185,129,0.4)] flex items-center justify-center gap-2">
+                    <i class='bx bx-play-circle text-xl md:text-2xl'></i>
+                    <span>Empezar Ahora</span>
+                </button>
             </div>
         </div>
-    </section>
 
-    <!-- How It Works Section - Modules Guide -->
-    <section class="mb-12 md:mb-20">
-        <div class="text-center mb-8 md:mb-12">
-            <span class="text-emerald-400 font-bold tracking-wider uppercase text-xs md:text-sm">Guía de la
-                Plataforma</span>
-            <h2 class="text-2xl md:text-4xl font-bold text-white mt-2">Descubre Nuestros Módulos</h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            <!-- Module 1: Trends & Discover -->
-            <div class="p-5 md:p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl hover:bg-zinc-900 transition-colors group cursor-pointer"
-                (click)="navigateTo('/browse')">
-                <div
-                    class="w-10 h-10 md:w-12 md:h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-3 md:mb-4 text-blue-400 group-hover:scale-110 transition-transform">
-                    <i class='bx bx-compass text-xl md:text-2xl'></i>
-                </div>
-                <h3 class="text-white font-bold mb-2 text-sm md:text-base">Explorar y Tendencias</h3>
-                <p class="text-zinc-400 text-xs md:text-sm">
-                    Mantente al día con lo último. En la sección <strong>Explorar</strong> encontrarás los lanzamientos
-                    más recientes.
-                </p>
-            </div>
-
-            <!-- Module 2: Charts -->
-            <div class="p-5 md:p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl hover:bg-zinc-900 transition-colors group cursor-pointer"
-                (click)="navigateTo('/browse/charts')">
-                <div
-                    class="w-10 h-10 md:w-12 md:h-12 bg-yellow-500/10 rounded-xl flex items-center justify-center mb-3 md:mb-4 text-yellow-400 group-hover:scale-110 transition-transform">
-                    <i class='bx bx-trophy text-xl md:text-2xl'></i>
-                </div>
-                <h3 class="text-white font-bold mb-2 text-sm md:text-base">Top Rankings</h3>
-                <p class="text-zinc-400 text-xs md:text-sm">
-                    ¿Quién es el número 1? Consulta nuestros <strong>Charts</strong> globales y locales.
-                </p>
-            </div>
-
-            <!-- Module 3: Artists -->
-            <div class="p-5 md:p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl hover:bg-zinc-900 transition-colors group cursor-pointer"
-                (click)="navigateTo('/artists')">
-                <div
-                    class="w-10 h-10 md:w-12 md:h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-3 md:mb-4 text-purple-400 group-hover:scale-110 transition-transform">
-                    <i class='bx bx-microphone text-xl md:text-2xl'></i>
-                </div>
-                <h3 class="text-white font-bold mb-2 text-sm md:text-base">Zona de Artistas</h3>
-                <p class="text-zinc-400 text-xs md:text-sm">
-                    Conecta con tus ídolos. En <strong>Artistas</strong> tienes discografías completas y biografías.
-                </p>
-            </div>
-
-            <!-- Module 4: No Copyright -->
-            <div class="p-5 md:p-6 bg-zinc-900/50 border border-zinc-800 rounded-2xl hover:bg-zinc-900 transition-colors group cursor-pointer"
-                (click)="navigateTo('/sin-copyright')">
-                <div
-                    class="w-10 h-10 md:w-12 md:h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center mb-3 md:mb-4 text-emerald-400 group-hover:scale-110 transition-transform">
-                    <i class='bx bx-shield-alt-2 text-xl md:text-2xl'></i>
-                </div>
-                <h3 class="text-white font-bold mb-2 text-sm md:text-base">Música Sin Copyright</h3>
-                <p class="text-zinc-400 text-xs md:text-sm">
-                    ¿Eres creador? Accede a nuestra biblioteca exclusiva de música <strong>Libre de Derechos</strong>.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Grid (Expanded Information) -->
-    <section class="mb-12 md:mb-20">
-        <div class="text-center mb-8 md:mb-12">
-            <span class="text-emerald-400 font-bold tracking-wider uppercase text-xs md:text-sm">¿Por qué
-                DonMusica?</span>
-            <h2 class="text-2xl md:text-4xl font-bold text-white mt-2">La Mejor Experiencia Musical</h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <!-- "PRO BETA" CARD -->
+        <div class="max-w-4xl mx-auto pt-8 mb-12 md:mb-16 animate-fade-in-up" style="animation-delay: 400ms;">
             <div
-                class="p-6 md:p-8 bg-zinc-900/40 border border-zinc-800 rounded-3xl hover:border-emerald-500/30 transition-all group hover:-translate-y-1 duration-300">
+                class="rounded-2xl bg-gradient-to-r from-zinc-900/80 to-black/80 border border-white/5 backdrop-blur-md p-1 md:p-2">
                 <div
-                    class="w-12 h-12 md:w-14 md:h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-4 md:mb-6 group-hover:bg-emerald-500/20 transition-colors">
-                    <i class='bx bx-headphone text-2xl md:text-3xl text-emerald-400'></i>
+                    class="rounded-xl bg-zinc-900/50 border border-amber-500/10 p-4 md:p-6 flex flex-col md:flex-row items-center gap-4 text-center md:text-left relative overflow-hidden">
+                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/10 blur-3xl rounded-full"></div>
+                    <div
+                        class="w-12 h-12 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-400 shrink-0 border border-amber-500/20">
+                        <i class='bx bx-star text-2xl animate-pulse'></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-white font-bold text-base md:text-lg mb-0.5">DonMusica Pro <span
+                                class="text-amber-500 text-xs ml-1 uppercase border border-amber-500/30 px-1 rounded">Beta</span>
+                        </h3>
+                        <p class="text-zinc-400 text-xs md:text-sm">Estamos desarrollando herramientas para patrocinar
+                            artistas. ¡Pronto disponible!</p>
+                    </div>
                 </div>
-                <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-3 text-white">Audio de Alta Fidelidad</h3>
-                <p class="text-zinc-400 leading-relaxed mb-4 text-sm md:text-base">Disfruta de tu música con la máxima
-                    calidad de sonido.
-                    Soportamos formatos lossless.</p>
-                <ul class="text-xs md:text-sm text-zinc-500 space-y-2">
-                    <li class="flex items-center gap-2"><i class='bx bx-check text-emerald-500'></i> 320kbps MP3
-                    </li>
-                    <li class="flex items-center gap-2"><i class='bx bx-check text-emerald-500'></i> FLAC Support
-                    </li>
-                </ul>
-            </div>
-
-            <div
-                class="p-6 md:p-8 bg-zinc-900/40 border border-zinc-800 rounded-3xl hover:border-emerald-500/30 transition-all group hover:-translate-y-1 duration-300">
-                <div
-                    class="w-12 h-12 md:w-14 md:h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-4 md:mb-6 group-hover:bg-blue-500/20 transition-colors">
-                    <i class='bx bx-world text-2xl md:text-3xl text-blue-400'></i>
-                </div>
-                <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-3 text-white">Explora sin Límites</h3>
-                <p class="text-zinc-400 leading-relaxed mb-4 text-sm md:text-base">Accede a millones de canciones de
-                    todo el mundo. Sin
-                    restricciones geográficas.</p>
-                <ul class="text-xs md:text-sm text-zinc-500 space-y-2">
-                    <li class="flex items-center gap-2"><i class='bx bx-check text-blue-500'></i> Catálogo Global
-                    </li>
-                    <li class="flex items-center gap-2"><i class='bx bx-check text-blue-500'></i> Artistas
-                        Independientes</li>
-                </ul>
-            </div>
-
-            <div
-                class="p-6 md:p-8 bg-zinc-900/40 border border-zinc-800 rounded-3xl hover:border-emerald-500/30 transition-all group hover:-translate-y-1 duration-300">
-                <div
-                    class="w-12 h-12 md:w-14 md:h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center mb-4 md:mb-6 group-hover:bg-purple-500/20 transition-colors">
-                    <i class='bx bx-heart text-2xl md:text-3xl text-purple-400'></i>
-                </div>
-                <h3 class="text-lg md:text-xl font-bold mb-2 md:mb-3 text-white">Comunidad Activa</h3>
-                <p class="text-zinc-400 leading-relaxed mb-4 text-sm md:text-base">Únete a una comunidad apasionada.
-                    Comparte playlists y descubre joyas ocultas.</p>
-                <ul class="text-xs md:text-sm text-zinc-500 space-y-2">
-                    <li class="flex items-center gap-2"><i class='bx bx-check text-purple-500'></i> Playlists
-                        Colaborativas</li>
-                    <li class="flex items-center gap-2"><i class='bx bx-check text-purple-500'></i> Peticiones de
-                        Canciones</li>
-                </ul>
             </div>
         </div>
-    </section>
 
-    <!-- Stats Section -->
-    <section
-        class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 md:mb-20 bg-zinc-900/30 rounded-3xl p-6 md:p-8 border border-zinc-800/50">
-        <div class="text-center">
-            <p class="text-2xl md:text-5xl font-black text-white mb-1 md:mb-2">10k+</p>
-            <p class="text-emerald-400 font-medium uppercase tracking-wider text-xs md:text-sm">Artistas</p>
-        </div>
-        <div class="text-center border-l border-zinc-800">
-            <p class="text-2xl md:text-5xl font-black text-white mb-1 md:mb-2">5M+</p>
-            <p class="text-emerald-400 font-medium uppercase tracking-wider text-xs md:text-sm">Canciones</p>
-        </div>
-        <div class="text-center border-l border-zinc-800">
-            <p class="text-2xl md:text-5xl font-black text-white mb-1 md:mb-2">24/7</p>
-            <p class="text-emerald-400 font-medium uppercase tracking-wider text-xs md:text-sm">Soporte</p>
-        </div>
-        <div class="text-center border-l border-zinc-800">
-            <p class="text-2xl md:text-5xl font-black text-white mb-1 md:mb-2">4.9</p>
-            <p class="text-emerald-400 font-medium uppercase tracking-wider text-xs md:text-sm">Rating</p>
-        </div>
-    </section>
+        <!-- MODULES GUIDE -->
+        <div class="mb-12 md:mb-16">
+            <h2 class="text-xl md:text-2xl font-bold text-white mb-6 text-center md:text-left pl-1">Todo lo que
+                necesitas</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
 
-    <!-- Request Music Form -->
-    <section
-        class="relative overflow-hidden rounded-3xl border border-zinc-800 bg-gradient-to-br from-zinc-900 to-black p-6 md:p-12 mb-8 md:mb-12">
-        <!-- Decorative Elements -->
-        <div
-            class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none">
-        </div>
-        <div
-            class="absolute bottom-0 left-0 -mb-20 -ml-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none">
-        </div>
+                <!-- Card 1: Explorar -->
+                <div (click)="navigateTo('/browse')"
+                    class="group bg-zinc-900 border border-zinc-800 p-5 rounded-2xl hover:border-blue-500/30 transition-all cursor-pointer hover:-translate-y-1 active:scale-[0.98]">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400">
+                            <i class='bx bx-compass text-xl'></i>
+                        </div>
+                        <i
+                            class='bx bx-right-arrow-alt text-zinc-600 group-hover:text-white text-xl transition-colors'></i>
+                    </div>
+                    <h3 class="text-white font-bold text-lg mb-2">Explorar</h3>
+                    <p class="text-zinc-400 text-xs leading-relaxed mb-3 line-clamp-2">
+                        Descubre lo último. Nuevos lanzamientos y listas curadas.
+                    </p>
+                    <span class="text-blue-500 text-xs font-bold uppercase tracking-wide">Ver Novedades</span>
+                </div>
 
-        <div class="relative z-10 grid lg:grid-cols-2 gap-8 md:gap-16 items-center">
-            <div>
-                <span
-                    class="inline-block py-1 px-3 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] md:text-xs font-bold uppercase tracking-wider mb-3 md:mb-4 border border-emerald-500/20">
-                    Comunidad
-                </span>
-                <h3 class="text-2xl md:text-5xl font-bold mb-4 md:mb-6 text-white leading-tight">
-                    ¿Falta tu canción<br>favorita?
-                </h3>
-                <p class="text-zinc-400 mb-6 md:mb-8 text-sm md:text-lg leading-relaxed">
-                    En DonMusica construimos la biblioteca juntos. Si no encuentras lo que buscas, pídelo y nuestro
-                    equipo lo subirá en tiempo récord.
-                </p>
-
-                <div class="space-y-4">
-                    <div class="flex items-center gap-4 p-4 bg-zinc-800/50 rounded-xl border border-zinc-700/50">
+                <!-- Card 2: Charts -->
+                <div (click)="navigateTo('/browse/charts')"
+                    class="group bg-zinc-900 border border-zinc-800 p-5 rounded-2xl hover:border-yellow-500/30 transition-all cursor-pointer hover:-translate-y-1 active:scale-[0.98]">
+                    <div class="flex justify-between items-start mb-4">
                         <div
-                            class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
-                            <i class='bx bx-rocket text-xl'></i>
+                            class="w-10 h-10 rounded-lg bg-yellow-500/10 flex items-center justify-center text-yellow-400">
+                            <i class='bx bx-trophy text-xl'></i>
                         </div>
-                        <div>
-                            <h4 class="font-bold text-white text-sm md:text-base">Prioridad Alta</h4>
-                            <p class="text-xs md:text-sm text-zinc-400">Las solicitudes se procesan en < 24h</p>
+                        <i
+                            class='bx bx-right-arrow-alt text-zinc-600 group-hover:text-white text-xl transition-colors'></i>
+                    </div>
+                    <h3 class="text-white font-bold text-lg mb-2">Top Charts</h3>
+                    <p class="text-zinc-400 text-xs leading-relaxed mb-3 line-clamp-2">
+                        Ranking global y local de las canciones más sonadas.
+                    </p>
+                    <span class="text-yellow-500 text-xs font-bold uppercase tracking-wide">Ver Ranking</span>
+                </div>
+
+                <!-- Card 3: Artistas -->
+                <div (click)="navigateTo('/artists')"
+                    class="group bg-zinc-900 border border-zinc-800 p-5 rounded-2xl hover:border-purple-500/30 transition-all cursor-pointer hover:-translate-y-1 active:scale-[0.98]">
+                    <div class="flex justify-between items-start mb-4">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400">
+                            <i class='bx bx-microphone text-xl'></i>
+                        </div>
+                        <i
+                            class='bx bx-right-arrow-alt text-zinc-600 group-hover:text-white text-xl transition-colors'></i>
+                    </div>
+                    <h3 class="text-white font-bold text-lg mb-2">Artistas</h3>
+                    <p class="text-zinc-400 text-xs leading-relaxed mb-3 line-clamp-2">
+                        Discografías completas y biografías de tus ídolos.
+                    </p>
+                    <span class="text-purple-500 text-xs font-bold uppercase tracking-wide">Buscar Artista</span>
+                </div>
+
+                <!-- Card 4: Sin Copyright -->
+                <div (click)="navigateTo('/sin-copyright')"
+                    class="group bg-zinc-900 border border-zinc-800 p-5 rounded-2xl hover:border-emerald-500/30 transition-all cursor-pointer hover:-translate-y-1 active:scale-[0.98]">
+                    <div class="flex justify-between items-start mb-4">
+                        <div
+                            class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+                            <i class='bx bx-shield-alt-2 text-xl'></i>
+                        </div>
+                        <i
+                            class='bx bx-right-arrow-alt text-zinc-600 group-hover:text-white text-xl transition-colors'></i>
+                    </div>
+                    <h3 class="text-white font-bold text-lg mb-2">Sin Copyright</h3>
+                    <p class="text-zinc-400 text-xs leading-relaxed mb-3 line-clamp-2">
+                        Música libre de derechos para tus videos y streams.
+                    </p>
+                    <span class="text-emerald-500 text-xs font-bold uppercase tracking-wide">Descargar Gratis</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- TRENDING MINI -->
+        <div class="mb-12 md:mb-16">
+            <div class="flex items-center justify-between mb-4 md:mb-6 pl-1 pr-1">
+                <h2 class="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
+                    <i class='bx bx-trending-up text-emerald-500'></i> Tendencias
+                </h2>
+                <button (click)="navigateTo('/browse/trends')"
+                    class="text-zinc-400 text-xs font-bold hover:text-white transition-colors bg-zinc-800 px-3 py-1.5 rounded-full">
+                    Ver Top 50
+                </button>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+                @for(song of trendingSongs; track song.id) {
+                <div
+                    class="group relative aspect-[1/1] bg-zinc-900 rounded-xl overflow-hidden cursor-pointer border border-white/5 hover:border-emerald-500/30 transition-all">
+                    <img [src]="song.img"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-70 group-hover:opacity-100">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent flex flex-col justify-end p-3">
+                        <h4 class="text-white text-xs font-bold truncate">{{song.title}}</h4>
+                        <p class="text-zinc-400 text-[10px] truncate">{{song.artist}}</p>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+
+        <!-- REQUEST FORM (Updated Contact) -->
+        <div #requestForm id="requestForm"
+            class="rounded-3xl bg-zinc-900 border border-zinc-800 overflow-hidden relative mb-8">
+            <div
+                class="absolute top-0 right-0 p-32 bg-emerald-500/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none">
+            </div>
+
+            <div class="grid md:grid-cols-2">
+                <div class="p-6 md:p-10 flex flex-col justify-center">
+                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Pide tu Música</h2>
+                    <p class="text-zinc-400 text-sm mb-6 leading-relaxed">
+                        ¿No encuentras esa canción especial? Llena el formulario y la subiremos por ti.
+                    </p>
+                    <div class="flex gap-4">
+                        <div class="flex items-center gap-2 text-zinc-400 text-xs">
+                            <i class='bx bx-time text-emerald-500'></i> Rápido
+                        </div>
+                        <div class="flex items-center gap-2 text-zinc-400 text-xs">
+                            <i class='bx bx-check-circle text-emerald-500'></i> Gratis
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="bg-zinc-950/80 backdrop-blur-md p-5 md:p-8 rounded-2xl border border-zinc-800 shadow-2xl">
-                <form (submit)="submitRequest(); $event.preventDefault()" class="space-y-4 md:space-y-5">
-                    <h4 class="text-lg md:text-xl font-bold text-white mb-2">Enviar Solicitud</h4>
-                    <div>
-                        <label
-                            class="block text-[10px] md:text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Artista</label>
-                        <div class="relative">
-                            <i
-                                class='bx bx-microphone absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-lg'></i>
-                            <input [(ngModel)]="requestArtist" name="artist" type="text" placeholder="Ej: Bad Bunny"
-                                class="w-full pl-11 pr-4 py-3 md:py-3.5 bg-zinc-900 border border-zinc-800 rounded-xl focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none transition-all text-white placeholder-zinc-600 text-sm">
-                        </div>
-                    </div>
-                    <div>
-                        <label
-                            class="block text-[10px] md:text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2">Canción
-                            /
-                            Álbum</label>
-                        <div class="relative">
-                            <i class='bx bx-disc absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-lg'></i>
-                            <input [(ngModel)]="requestSong" name="song" type="text" placeholder="Ej: Un Verano Sin Ti"
-                                class="w-full pl-11 pr-4 py-3 md:py-3.5 bg-zinc-900 border border-zinc-800 rounded-xl focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none transition-all text-white placeholder-zinc-600 text-sm">
-                        </div>
-                    </div>
-                    <button type="submit"
-                        class="w-full py-3 md:py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-xl transition-all transform hover:scale-[1.02] shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 mt-2 text-sm md:text-base">
-                        <span>Enviar Solicitud</span>
-                        <i class='bx bx-paper-plane'></i>
-                    </button>
-                </form>
+                <div class="bg-black/20 p-6 md:p-10 border-t md:border-t-0 md:border-l border-zinc-800">
+                    <form (submit)="submitRequest(); $event.preventDefault()" class="space-y-3">
+                        <input [(ngModel)]="requestArtist" name="artist" type="text" placeholder="Nombre del Artista"
+                            class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-white text-sm focus:border-emerald-500 focus:outline-none transition-colors">
+                        <input [(ngModel)]="requestSong" name="song" type="text" placeholder="Nombre de la Canción"
+                            class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-white text-sm focus:border-emerald-500 focus:outline-none transition-colors">
+                        <button type="submit"
+                            class="w-full bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold py-3 rounded-lg text-sm transition-all transform active:scale-[0.98] shadow-lg shadow-emerald-500/10 mt-1">
+                            Enviar Petición
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-    </section>
 
-    <!-- Contact Section -->
-    <section class="mb-8 md:mb-12 border-t border-zinc-800 pt-8 md:pt-12">
-        <div class="text-center mb-6 md:mb-10">
-            <h2 class="text-xl md:text-2xl font-bold text-white">Contáctanos</h2>
-            <p class="text-zinc-400 mt-2 text-sm">¿Tienes dudas o propuestas comerciales?</p>
+        <!-- Mobile Contact (Links Updated) - Removed excessive padding -->
+        <div class="grid grid-cols-2 gap-3 pb-0 md:hidden">
+            <button (click)="scrollToRequest()"
+                class="flex flex-col items-center justify-center p-4 rounded-xl bg-zinc-900 border border-zinc-800 active:scale-95 transition-transform">
+                <i class='bx bx-envelope text-2xl text-emerald-500 mb-2'></i>
+                <p class="text-white text-xs font-bold">Contacto</p>
+            </button>
+            <a href="https://wa.me/573017966272" target="_blank"
+                class="flex flex-col items-center justify-center p-4 rounded-xl bg-zinc-900 border border-zinc-800 active:scale-95 transition-transform">
+                <i class='bx bxl-whatsapp text-2xl text-blue-500 mb-2'></i>
+                <p class="text-white text-xs font-bold">WhatsApp</p>
+            </a>
         </div>
-        <div class="grid md:grid-cols-3 gap-4 md:gap-6 text-center">
-            <div class="p-4 md:p-6 bg-zinc-900/30 rounded-xl border border-zinc-800/50">
-                <i class='bx bx-envelope text-2xl md:text-3xl text-emerald-400 mb-2 md:mb-3'></i>
-                <h3 class="text-white font-bold mb-1 text-sm md:text-base">Email</h3>
-                <p class="text-zinc-400 text-xs md:text-sm">contacto&#64;donmusica.com</p>
-            </div>
-            <div class="p-4 md:p-6 bg-zinc-900/30 rounded-xl border border-zinc-800/50">
-                <i class='bx bxl-whatsapp text-2xl md:text-3xl text-emerald-400 mb-2 md:mb-3'></i>
-                <h3 class="text-white font-bold mb-1 text-sm md:text-base">WhatsApp</h3>
-                <p class="text-zinc-400 text-xs md:text-sm">+57 300 123 4567</p>
-            </div>
-            <div class="p-4 md:p-6 bg-zinc-900/30 rounded-xl border border-zinc-800/50">
-                <i class='bx bx-map text-2xl md:text-3xl text-emerald-400 mb-2 md:mb-3'></i>
-                <h3 class="text-white font-bold mb-1 text-sm md:text-base">Ubicación</h3>
-                <p class="text-zinc-400 text-xs md:text-sm">Colombia</p>
-            </div>
-        </div>
-    </section>
 
+    </div>
 </div>

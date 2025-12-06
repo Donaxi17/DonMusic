@@ -99,18 +99,11 @@ export class FreeMusicComponent implements OnInit {
     });
   }
 
-  playSong(song: Song) {
-    this.playerService.playSong(song);
-  }
 
-  playAll() {
-    if (this.songs().length > 0) {
-      this.playerService.setPlaylist(this.songs());
-      this.playerService.playSong(this.songs()[0]);
-    }
-  }
 
   // Sistema de descarga con anuncios - OPTIMIZADO
+  // Sistema de descarga con anuncios - OPTIMIZADO
+
   openDownloadModal(song: Song) {
     this.selectedDownloadSong.set(song);
     this.showDownloadModal.set(true);
@@ -153,46 +146,38 @@ export class FreeMusicComponent implements OnInit {
     }
   }
 
+  playSong(song: Song) {
+    // Si la playlist actual no es la lista de canciones mostrada, actualizarla
+    // para permitir reproducción continua
+    const currentPlaylist = this.playerService.playlist;
+    const currentSongs = this.songs();
+
+    // Compara si la playlist actual es diferente (por longitud o ID del primer elemento)
+    // Esto es una verificación simple pero efectiva
+    if (currentPlaylist.length !== currentSongs.length ||
+      (currentPlaylist.length > 0 && currentSongs.length > 0 && currentPlaylist[0].id !== currentSongs[0].id)) {
+      this.playerService.setPlaylist(currentSongs);
+    }
+
+    this.playerService.playSong(song);
+  }
+
+  playAll() {
+    if (this.songs().length > 0) {
+      this.playerService.setPlaylist(this.songs());
+      this.playerService.playSong(this.songs()[0]);
+    }
+  }
+
   downloadSong() {
     const song = this.selectedDownloadSong();
     if (!song || !this.canDownload()) return;
 
-    // Descargar el archivo usando fetch para forzar la descarga
-    fetch(song.url)
-      .then(response => {
-        if (!response.ok) throw new Error('Error al descargar');
-        return response.blob();
-      })
-      .then(blob => {
-        // Crear URL del blob
-        const blobUrl = window.URL.createObjectURL(blob);
+    // Método directo y infalible: Abrir en nueva pestaña
+    // Esto permite al navegador manejar la descarga o reproducción sin bloqueos CORS
+    window.open(song.url, '_blank');
 
-        // Crear enlace temporal y forzar descarga
-        const link = document.createElement('a');
-        link.href = blobUrl;
-        link.download = `${song.artist} - ${song.title}.mp3`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        // Liberar memoria del blob
-        window.URL.revokeObjectURL(blobUrl);
-
-        this.closeDownloadModal();
-      })
-      .catch(error => {
-        console.error('Error al descargar:', error);
-        // Si falla el fetch, intentar método tradicional
-        const link = document.createElement('a');
-        link.href = song.url;
-        link.download = `${song.artist} - ${song.title}.mp3`;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        this.closeDownloadModal();
-      });
+    // Cerrar modal
+    setTimeout(() => this.closeDownloadModal(), 500);
   }
 }

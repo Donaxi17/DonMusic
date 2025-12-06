@@ -1,34 +1,49 @@
-<div class="min-h-screen bg-zinc-950 text-white pb-24">
-    <!-- Sub-Navigation Header -->
-    <div class="sticky top-[73px] z-40 bg-zinc-950/95 backdrop-blur-sm border-b border-zinc-800">
-        <div class="max-w-7xl mx-auto px-4 overflow-x-auto">
-            <nav class="flex items-center gap-2 py-3 min-w-max">
-                <a routerLink="trends" routerLinkActive="bg-emerald-500/20 text-emerald-400 border-emerald-500/50"
-                    class="px-4 py-2 rounded-full border border-zinc-800 text-sm font-medium text-zinc-400 hover:text-white hover:border-zinc-600 transition-all flex items-center gap-2">
-                    <i class='bx bx-trending-up'></i> Tendencias
+<div class="min-h-screen bg-zinc-950 text-white pb-4 md:pb-32">
+
+    <!-- Hero / Title Section (Compact Mobile) -->
+    <div class="pt-4 pb-2 px-5 md:pt-24">
+        <h1 class="text-3xl md:text-5xl font-black mb-1 animate-fade-in-up">Descubrir</h1>
+        <p class="text-zinc-500 text-sm animate-fade-in-up delay-75">Explora lo nuevo de la música mundial.</p>
+    </div>
+
+    <!-- Sub-Navigation (Sticky & Premium Pills) -->
+    <div
+        class="sticky top-[60px] md:top-[70px] z-40 bg-zinc-950/95 backdrop-blur-xl border-b border-zinc-800/50 py-2 shadow-lg shadow-black/20">
+        <div class="max-w-7xl mx-auto px-4">
+            <nav class="flex items-center gap-3 overflow-x-auto no-scrollbar py-1">
+
+                <a routerLink="trends"
+                    routerLinkActive="bg-emerald-500 text-black font-bold shadow-lg shadow-emerald-500/20"
+                    class="flex-shrink-0 px-5 py-2 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 font-medium text-sm transition-all duration-300 flex items-center gap-2 hover:bg-zinc-800 whitespace-nowrap active:scale-95">
+                    <i class='bx bx-trending-up text-lg'></i>
+                    Tendencias
                 </a>
-                <a routerLink="new-releases" routerLinkActive="bg-purple-500/20 text-purple-400 border-purple-500/50"
-                    class="px-4 py-2 rounded-full border border-zinc-800 text-sm font-medium text-zinc-400 hover:text-white hover:border-zinc-600 transition-all flex items-center gap-2">
-                    <i class='bx bx-rocket'></i> Nuevos
+
+                <a routerLink="new-releases"
+                    routerLinkActive="bg-purple-500 text-white font-bold shadow-lg shadow-purple-500/20"
+                    class="flex-shrink-0 px-5 py-2 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 font-medium text-sm transition-all duration-300 flex items-center gap-2 hover:bg-zinc-800 whitespace-nowrap active:scale-95">
+                    <i class='bx bx-rocket text-lg'></i>
+                    Estrenos
                 </a>
-                <a routerLink="charts" routerLinkActive="bg-blue-500/20 text-blue-400 border-blue-500/50"
-                    class="px-4 py-2 rounded-full border border-zinc-800 text-sm font-medium text-zinc-400 hover:text-white hover:border-zinc-600 transition-all flex items-center gap-2">
-                    <i class='bx bx-globe'></i> Rankings
+
+                <a routerLink="charts" routerLinkActive="bg-blue-500 text-white font-bold shadow-lg shadow-blue-500/20"
+                    class="flex-shrink-0 px-5 py-2 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 font-medium text-sm transition-all duration-300 flex items-center gap-2 hover:bg-zinc-800 whitespace-nowrap active:scale-95">
+                    <i class='bx bx-trophy text-lg'></i>
+                    Rankings
                 </a>
-                <a routerLink="featured-playlists" routerLinkActive="bg-cyan-500/20 text-cyan-400 border-cyan-500/50"
-                    class="px-4 py-2 rounded-full border border-zinc-800 text-sm font-medium text-zinc-400 hover:text-white hover:border-zinc-600 transition-all flex items-center gap-2">
-                    <i class='bx bx-list-ul'></i> Playlists
-                </a>
-                <a routerLink="search" routerLinkActive="bg-pink-500/20 text-pink-400 border-pink-500/50"
-                    class="px-4 py-2 rounded-full border border-zinc-800 text-sm font-medium text-zinc-400 hover:text-white hover:border-zinc-600 transition-all flex items-center gap-2">
-                    <i class='bx bx-search'></i> Buscar
+
+                <a routerLink="featured-playlists"
+                    routerLinkActive="bg-cyan-500 text-black font-bold shadow-lg shadow-cyan-500/20"
+                    class="flex-shrink-0 px-5 py-2 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 font-medium text-sm transition-all duration-300 flex items-center gap-2 hover:bg-zinc-800 whitespace-nowrap active:scale-95">
+                    <i class='bx bx-list-ul text-lg'></i>
+                    Playlists
                 </a>
             </nav>
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="max-w-7xl mx-auto px-4 py-6">
+    <!-- Main Content Container (Reduced Padding) -->
+    <div class="max-w-7xl mx-auto px-4 py-4 md:py-8 animate-fade-in">
         <router-outlet></router-outlet>
     </div>
 </div>

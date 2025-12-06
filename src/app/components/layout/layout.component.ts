@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { PlayerService } from '../../services/player.service';
@@ -6,11 +6,13 @@ import { Song } from '../../services/playlist.service';
 import { filter } from 'rxjs/operators';
 
 import { FooterComponent } from '../shared/footer/footer.component';
+import { RecentlyPlayedComponent } from '../shared/recently-played/recently-played.component';
+import { RedesSocialesComponent } from '../redes-sociales/redes-sociales.component';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule, FooterComponent],
+  imports: [CommonModule, RouterModule, FooterComponent, RecentlyPlayedComponent, RedesSocialesComponent],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'
 })
@@ -20,7 +22,48 @@ export class LayoutComponent implements OnInit {
   isFavoritesPlaying = false;
   showMoreMenu = false;
   showMobileMoreMenu = false;
+  showHistory = false;
   private previousRoute: string = '/';
+
+  constructor(
+    public playerService: PlayerService,
+    public router: Router
+  ) { }
+
+  ngOnInit(): void {
+    if (typeof document !== 'undefined') {
+      document.addEventListener('closeHistory', () => {
+        this.showHistory = false;
+      });
+    }
+
+    this.playerService.currentSong$.subscribe(song => {
+      this.currentSong = song;
+    });
+
+    this.playerService.isPlaying$.subscribe(playing => {
+      this.isPlaying = playing;
+    });
+
+    this.playerService.isFavoritesPlaying$.subscribe(isFav => {
+      this.isFavoritesPlaying = isFav;
+    });
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      if (!event.url.startsWith('/player')) {
+        this.previousRoute = event.url;
+      }
+      this.showMobileMoreMenu = false;
+      this.showMoreMenu = false;
+    });
+  }
+
+  isMoreActive(): boolean {
+    const moreRoutes = ['/sin-copyright', '/converter', '/radio', '/playlists', '/blog', '/saved-lyrics', '/about', '/contact'];
+    return moreRoutes.some(route => this.isActive(route));
+  }
 
   toggleMoreMenu() {
     this.showMoreMenu = !this.showMoreMenu;
@@ -38,34 +81,8 @@ export class LayoutComponent implements OnInit {
     this.showMobileMoreMenu = false;
   }
 
-  constructor(
-    public playerService: PlayerService,
-    private router: Router
-  ) { }
-
-  ngOnInit(): void {
-    // Suscribirse al estado del reproductor
-    this.playerService.currentSong$.subscribe(song => {
-      this.currentSong = song;
-    });
-
-    this.playerService.isPlaying$.subscribe(playing => {
-      this.isPlaying = playing;
-    });
-
-    this.playerService.isFavoritesPlaying$.subscribe(isFav => {
-      this.isFavoritesPlaying = isFav;
-    });
-
-    // Track navigation to remember where we came from
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      // Only update previousRoute if we're not going to player
-      if (!event.url.startsWith('/player')) {
-        this.previousRoute = event.url;
-      }
-    });
+  toggleHistory() {
+    this.showHistory = !this.showHistory;
   }
 
   navigateTo(route: string): void {
@@ -73,30 +90,16 @@ export class LayoutComponent implements OnInit {
   }
 
   isActive(route: string): boolean {
-    const currentUrl = this.router.url;
+    const urlTree = this.router.parseUrl(this.router.url);
+    const urlSegmentGroup = urlTree.root.children['primary'];
+    const urlSegments = urlSegmentGroup ? urlSegmentGroup.segments : [];
+    const currentPath = '/' + urlSegments.map(s => s.path).join('/');
 
-    // Exact match for home route
-    if (route === '/' || route === '') {
-      return currentUrl === '/' || currentUrl === '';
+    if (route === '/') {
+      return currentPath === '/';
     }
 
-    // Special handling for /player route
-    if (currentUrl.startsWith('/player')) {
-      // Check if we're checking the artists route
-      if (route === '/artists') {
-        // Only highlight artists if we came from artists or have artistId in URL
-        return currentUrl.includes('artistId') || this.previousRoute === '/artists';
-      }
-      // Check if we're checking playlists route
-      if (route === '/playlists') {
-        // Highlight playlists if we came from playlists
-        return this.previousRoute === '/playlists';
-      }
-      return false;
-    }
-
-    // For other routes, check if URL starts with the route
-    return currentUrl.startsWith(route);
+    return currentPath.startsWith(route);
   }
 
   togglePlayPause(): void {

@@ -1,36 +1,37 @@
-<div class="min-h-screen bg-zinc-950 pb-24">
-    <!-- Video Player Overlay -->
-    @if (currentVideoUrl()) {
-    <div
-        class="fixed inset-0 z-50 bg-black/95 video-overlay-backdrop flex flex-col items-center justify-center p-2 md:p-4">
-        <div class="w-full max-w-5xl">
-            <button (click)="closeVideo()"
-                class="absolute top-4 right-4 md:top-6 md:right-6 z-10 bg-black/50 hover:bg-red-500 text-white p-2 md:p-3 rounded-full transition-all duration-300 backdrop-blur-md ripple-effect">
-                <i class='bx bx-x text-xl md:text-2xl'></i>
-            </button>
+<div class="min-h-screen bg-zinc-950 pb-4 md:pb-32 overflow-x-hidden">
 
+    <!-- Video Player Overlay (Full Screen Mobile) -->
+    @if (currentVideoUrl()) {
+    <div class="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center animate-fade-in">
+        <!-- Close Button -->
+        <button (click)="closeVideo()"
+            class="absolute top-4 right-4 z-50 bg-black/50 hover:bg-zinc-800 text-white w-10 h-10 flex items-center justify-center rounded-full backdrop-blur-md transition-all">
+            <i class='bx bx-x text-2xl'></i>
+        </button>
+
+        <div class="w-full max-w-5xl h-full md:h-auto flex flex-col">
+            <!-- Video Container -->
             <div
-                class="aspect-video bg-black rounded-xl md:rounded-2xl overflow-hidden shadow-2xl shadow-red-500/20 relative mb-4 md:mb-6">
+                class="relative w-full aspect-video bg-black shadow-2xl shadow-red-500/10 md:rounded-2xl overflow-hidden mt-14 md:mt-0 flex-shrink-0">
                 <iframe [src]="currentVideoUrl()! | safe" class="w-full h-full" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen>
                 </iframe>
             </div>
 
-            <div
-                class="bg-zinc-900/90 backdrop-blur-xl border border-zinc-700 rounded-xl md:rounded-2xl p-4 md:p-6 text-center">
-                <div class="flex items-center justify-center gap-2 md:gap-3 mb-2 md:mb-4">
-                    <i class='bx bx-info-circle text-yellow-500 text-2xl md:text-3xl'></i>
-                    <h3 class="text-lg md:text-xl font-bold text-white">¿No se reproduce el video?</h3>
+            <!-- Error/Help Container -->
+            <div class="p-6 md:p-8 flex-1 flex flex-col items-center justify-center text-center animate-fade-in-up">
+                <div class="bg-zinc-900/50 p-6 rounded-2xl border border-zinc-800 max-w-md w-full backdrop-blur-sm">
+                    <h3 class="text-white font-bold mb-2 flex items-center justify-center gap-2">
+                        <i class='bx bx-info-circle text-yellow-500'></i> ¿Problemas?
+                    </h3>
+                    <p class="text-zinc-400 text-sm mb-4">Si el video no carga, probablemente tiene restricciones de
+                        copyright.</p>
+                    <a [href]="watchOnYoutubeUrl()" target="_blank"
+                        class="w-full flex items-center justify-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-all active:scale-95">
+                        <i class='bx bxl-youtube text-xl'></i> Ver en YouTube
+                    </a>
                 </div>
-                <p class="text-zinc-400 text-sm md:text-base mb-3 md:mb-4">
-                    Algunos videos musicales tienen restricciones de YouTube y no pueden reproducirse aquí.
-                </p>
-                <a [href]="watchOnYoutubeUrl()" target="_blank"
-                    class="ripple-effect inline-flex items-center gap-2 px-5 py-2.5 md:px-6 md:py-3 bg-red-600 hover:bg-red-700 text-white text-sm md:text-base font-bold rounded-full transition-all duration-300 transform hover:scale-105">
-                    <i class='bx bxl-youtube text-xl md:text-2xl'></i>
-                    Abrir en YouTube
-                </a>
             </div>
         </div>
     </div>
@@ -38,45 +39,46 @@
 
     <!-- Loading Overlay -->
     @if (isVideoLoading()) {
-    <div class="fixed inset-0 z-[60] bg-black/80 flex flex-col items-center justify-center backdrop-blur-sm">
-        <div class="animate-spin rounded-full h-12 w-12 md:h-16 md:w-16 border-t-2 border-b-2 border-red-500 mb-4">
-        </div>
-        <p class="text-white text-base md:text-lg font-medium animate-pulse">Preparando video...</p>
+    <div class="fixed inset-0 z-[90] bg-black/90 flex flex-col items-center justify-center backdrop-blur-md">
+        <div class="w-16 h-16 border-4 border-red-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p class="text-white font-bold tracking-widest animate-pulse">CARGANDO</p>
     </div>
     }
 
-    <!-- Header -->
-    <div class="relative h-[40vh] md:h-[50vh] overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-zinc-950 z-10"></div>
-        <img src="https://img.youtube.com/vi/S0gK524i10c/maxresdefault.jpg"
-            class="w-full h-full object-cover opacity-50 blur-sm scale-105" alt="Hero Background">
+    <!-- Hero Header Combined with Search (Very Compact Mobile) -->
+    <div class="relative pt-6 pb-6 md:pt-32 md:pb-12 px-4 md:px-6">
+        <!-- Background Gradients -->
+        <div
+            class="absolute top-0 left-0 right-0 h-[40vh] bg-gradient-to-b from-red-900/10 via-zinc-950/80 to-zinc-950 z-0 pointer-events-none">
+        </div>
 
-        <div class="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4">
-            <h1
-                class="text-3xl md:text-6xl font-bold mb-2 md:mb-4 bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
-                Videos Musicales
+        <div class="relative z-10 max-w-3xl mx-auto text-center">
+            <h1 class="text-3xl md:text-5xl font-black text-white mb-1 tracking-tight">
+                Visi<span class="text-red-500">ón</span>
             </h1>
-            <p class="text-zinc-300 text-sm md:text-xl max-w-2xl mb-6 md:mb-8">
-                Busca y disfruta de tus videoclips favoritos de YouTube
-            </p>
+            <p class="text-zinc-400 text-xs md:text-lg mb-6">Tus videos musicales favoritos en alta definición.</p>
 
-            <!-- Search Bar -->
-            <div class="w-full max-w-2xl relative group">
+            <!-- Search Bar (Premium Sticky feel) -->
+            <div class="group sticky top-4 z-30">
                 <div
-                    class="absolute inset-0 bg-gradient-to-r from-red-500 to-orange-500 rounded-full blur opacity-25 group-hover:opacity-50 transition-opacity">
+                    class="absolute inset-0 bg-red-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                 </div>
                 <div
-                    class="relative flex items-center bg-zinc-900/90 backdrop-blur-xl border border-zinc-700 rounded-full p-1.5 md:p-2 shadow-2xl">
-                    <i class='bx bx-search text-xl md:text-2xl text-zinc-400 ml-3 md:ml-4'></i>
-                    <input type="text" placeholder="Busca artistas, canciones..."
-                        class="w-full bg-transparent border-none outline-none text-white px-3 py-2 md:px-4 md:py-2 text-sm md:text-base placeholder-zinc-500"
-                        [value]="searchQuery()" (input)="updateQuery($event)" (keydown)="onKeydown($event)">
+                    class="relative flex items-center bg-zinc-900 border border-zinc-700/50 rounded-2xl p-1.5 md:p-2 shadow-2xl focus-within:border-red-500/50 focus-within:ring-4 focus-within:ring-red-500/10 transition-all">
+                    <div class="w-10 h-10 flex items-center justify-center text-zinc-500">
+                        <i class='bx bx-search text-xl'></i>
+                    </div>
+                    <input type="text"
+                        class="flex-1 bg-transparent border-none outline-none text-white placeholder-zinc-500 text-base px-2"
+                        placeholder="Buscar videos..." [value]="searchQuery()" (input)="updateQuery($event)"
+                        (keydown)="onKeydown($event)">
+
                     <button (click)="search()" [disabled]="isLoading()"
-                        class="ripple-effect bg-red-600 hover:bg-red-500 text-white px-4 py-1.5 md:px-6 md:py-2 rounded-full text-sm md:text-base font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+                        class="bg-red-600 hover:bg-red-500 text-white w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center transition-transform active:scale-95 disabled:opacity-50 disabled:active:scale-100">
                         @if (isLoading()) {
-                        <i class='bx bx-loader-alt animate-spin'></i>
+                        <i class='bx bx-loader-alt animate-spin text-lg'></i>
                         } @else {
-                        Buscar
+                        <i class='bx bx-search text-lg'></i>
                         }
                     </button>
                 </div>
@@ -84,62 +86,66 @@
         </div>
     </div>
 
-    <!-- Videos Grid -->
-    <div class="max-w-7xl mx-auto px-4 md:px-6 mt-8 md:mt-12 relative z-30">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+    <!-- Video Feed (Mobile Optimized with less margins) -->
+    <div class="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
             @for (video of videos(); track video.id; let i = $index) {
             <div (click)="playVideo(video)"
-                class="video-card group bg-zinc-900/80 backdrop-blur-md border border-zinc-800 rounded-lg md:rounded-xl overflow-hidden cursor-pointer hover:border-red-500/50 transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-xl hover:shadow-red-500/10">
+                class="group bg-zinc-900 rounded-2xl md:rounded-3xl overflow-hidden cursor-pointer border border-zinc-800 hover:border-red-500/30 transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-red-900/10 active:scale-[0.99] animate-fade-in-up"
+                [style.animation-delay]="i * 50 + 'ms'">
 
                 <!-- Thumbnail -->
-                <div class="aspect-video relative overflow-hidden">
+                <div class="aspect-video relative overflow-hidden bg-black">
                     <img [src]="video.thumbnail" [alt]="video.title" loading="lazy"
-                        class="video-thumbnail w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100">
 
-                    <!-- Play Overlay -->
-                    <div
-                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <!-- Play Button (Centered & Pulsing) -->
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <div
-                            class="w-12 h-12 md:w-16 md:h-16 bg-red-600 rounded-full flex items-center justify-center shadow-2xl transform scale-0 group-hover:scale-100 transition-transform duration-300 delay-75 play-button-pulse">
+                            class="w-12 h-12 md:w-16 md:h-16 bg-red-600/90 rounded-full flex items-center justify-center backdrop-blur-sm shadow-xl group-hover:scale-110 transition-transform duration-300">
                             <i class='bx bx-play text-3xl md:text-4xl text-white ml-1'></i>
                         </div>
                     </div>
 
-                    <!-- YouTube Badge -->
+                    <!-- Duration/Quality Badge -->
                     <div
-                        class="absolute top-2 right-2 md:top-3 md:right-3 bg-red-600 text-white text-[10px] md:text-xs px-2 py-0.5 md:px-3 md:py-1 rounded-full font-bold flex items-center gap-1 shadow-lg">
-                        <i class='bx bxl-youtube'></i>
-                        YouTube
-                    </div>
-
-                    <!-- HD Badge -->
-                    <div
-                        class="absolute bottom-2 right-2 md:bottom-3 md:right-3 bg-black/90 text-white text-[10px] md:text-xs px-1.5 py-0.5 md:px-2 md:py-1 rounded font-mono">
+                        class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-md text-white text-[10px] md:text-xs font-bold px-2 py-1 rounded">
                         HD
                     </div>
                 </div>
 
-                <!-- Info -->
-                <div class="p-3 md:p-4">
+                <!-- Info (Clean Layout) -->
+                <div class="p-4 md:p-5">
                     <h3
-                        class="text-base md:text-lg font-bold text-white mb-0.5 md:mb-1 line-clamp-2 group-hover:text-red-400 transition-colors leading-tight">
+                        class="text-white font-bold text-base md:text-lg leading-tight mb-2 line-clamp-2 md:line-clamp-1 group-hover:text-red-400 transition-colors">
                         {{ video.title }}
                     </h3>
-                    <p class="text-zinc-400 text-xs md:text-sm mb-1.5 md:mb-2 truncate">{{ video.artist }}</p>
-                    <div class="flex items-center justify-between text-zinc-500 text-[10px] md:text-xs">
-                        <div class="flex items-center gap-1">
-                            <i class='bx bx-music'></i>
-                            {{ video.views }}
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div
+                                class="w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center text-zinc-500">
+                                <i class='bx bx-music text-xs'></i>
+                            </div>
+                            <p class="text-zinc-400 text-xs md:text-sm font-medium truncate max-w-[150px]">{{
+                                video.artist }}</p>
                         </div>
-                        <div
-                            class="flex items-center gap-1 text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <i class='bx bx-play-circle'></i>
-                            Reproducir
-                        </div>
+                        <span class="text-[10px] text-zinc-600 font-mono">{{video.views}} vistas</span>
                     </div>
                 </div>
             </div>
             }
         </div>
+
+        <!-- Empty State -->
+        @if (videos().length === 0 && !isLoading()) {
+        <div class="flex flex-col items-center justify-center py-10 md:py-20 text-center animate-fade-in">
+            <div
+                class="w-16 h-16 md:w-20 md:h-20 bg-zinc-900 rounded-full flex items-center justify-center mb-4 text-zinc-700">
+                <i class='bx bx-film text-3xl md:text-4xl'></i>
+            </div>
+            <h3 class="text-white font-bold text-lg mb-2">Empieza a buscar</h3>
+            <p class="text-zinc-500 max-w-xs mx-auto text-sm">Busca tus videos musicales favoritos para verlos aquí.</p>
+        </div>
+        }
     </div>
 </div>
